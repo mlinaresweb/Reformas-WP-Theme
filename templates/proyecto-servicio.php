@@ -79,7 +79,7 @@ get_header(); ?>
           }
           // Asignar clases “large”/“wide” si hay suficientes items
           $cls = '';
-          if ( $count_page >= 8 ) {
+          if ( $count_page >= 9 ) {
             if( $i % 7 === 0 )      $cls = ' grid-item-large';
             elseif( $i % 5 === 0 )  $cls = ' grid-item-wide';
           }
