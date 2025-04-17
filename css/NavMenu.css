@@ -1,0 +1,88 @@
+
+  .site-header{
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+    background-color: #fff;
+    height: 60px;
+  }
+  .site-header.scrolled {
+    background-color: #fff; /* O el color que prefieras */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .nav-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+  }
+  .nav-menu{
+    display: flex;
+        align-items: center;
+        gap: 20px;
+        text-decoration: none;
+        list-style: none;
+  }
+  .nav-menu li {
+    display: inline-block;
+    position: relative;
+  }
+  /* Estilo para el submenú (ul anidado) */
+.nav-menu li ul {
+  position: absolute;
+  top: 100%; /* Justo debajo del elemento padre */
+  left: 0;
+  background-color: #fff;
+  padding: 10px 0;
+  min-width: 160px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10000; 
+  display: none; /* Oculto por defecto */
+}
+/* Mostrar el submenú al hacer hover sobre el li padre */
+.nav-menu li:hover > ul {
+  display: block;
+}
+
+/* Estilos para cada item del submenú */
+.nav-menu li ul li {
+  padding: 5px 15px;
+  white-space: nowrap;
+}
+
+/* Estilo para el enlace del submenú */
+.nav-menu li ul li a {
+  display: block;
+  color: #000;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Efecto hover para items del submenú */
+.nav-menu li ul li a:hover {
+  background-color: #f0f0f0;
+}
+  .nav-menu a {
+    text-decoration: none;
+    color: #000;
+  }
+
+  .top-bar-content{
+    display: flex;
+    gap: 20px;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .top-bar{
+    background-color: #cf2e2e;
+    padding: 6px 10px;
+  }
+
+  .top-bar-item a{
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+  }
