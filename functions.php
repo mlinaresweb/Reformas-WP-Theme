@@ -137,3 +137,36 @@ function reformas_add_editor_styles() {
 add_action( 'admin_enqueue_scripts', 'servicio_admin_enqueue_scripts' );
 
 
+// Manejar el envío del formulario de contacto de la página Contacto
+function handle_contact_page_form() {
+    if ( ! isset($_POST['contact_page_nonce']) || ! wp_verify_nonce($_POST['contact_page_nonce'], 'contact_page_form') ) {
+      wp_die('Error de seguridad, inténtalo de nuevo.');
+    }
+    $name    = sanitize_text_field( $_POST['contact_name'] );
+    $email   = sanitize_email( $_POST['contact_email'] );
+    $phone   = sanitize_text_field( $_POST['contact_phone'] );
+    $message = sanitize_textarea_field( $_POST['contact_message'] );
+  
+    $to = 'info@tudominio.com'; // tu email
+    $subject = 'Mensaje de contacto: ' . $name;
+    $headers = [
+      'Content-Type: text/html; charset=UTF-8',
+      'Reply-To: ' . $name . ' <' . $email . '>',
+    ];
+    $body  = "<p><strong>Nombre:</strong> {$name}</p>";
+    $body .= "<p><strong>Email:</strong> {$email}</p>";
+    if ( $phone ) {
+      $body .= "<p><strong>Teléfono:</strong> {$phone}</p>";
+    }
+    $body .= "<p><strong>Mensaje:</strong><br>" . nl2br($message) . "</p>";
+  
+    wp_mail( $to, $subject, $body, $headers );
+  
+    // Redirigir con flag de éxito
+    $redirect = add_query_arg( 'contacto', 'ok', wp_get_referer() );
+    wp_redirect( $redirect );
+    exit;
+  }
+  add_action( 'admin_post_nopriv_handle_contact_page_form', 'handle_contact_page_form' );
+  add_action( 'admin_post_handle_contact_page_form',        'handle_contact_page_form' );
+  
