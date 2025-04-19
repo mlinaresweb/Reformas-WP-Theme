@@ -2,7 +2,7 @@
 // single.php — Plantilla de entrada individual
 get_header(); ?>
 
-<main class="single-post">
+<main class="single-post single-post-layout">
   <div class="wrapper-contenido">
 
     <?php
@@ -47,13 +47,6 @@ get_header(); ?>
             <div class="nav-prev"><?php previous_post_link('« %link'); ?></div>
             <div class="nav-next"><?php next_post_link('%link »'); ?></div>
           </nav>
-
-          <!-- Comentarios (si los usas) -->
-          <?php
-            if ( comments_open() || get_comments_number() ) {
-              comments_template();
-            }
-          ?>
 
         </article>
 

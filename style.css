@@ -1317,7 +1317,7 @@ body {
 
 
 /* === Entrada Individual === */
-.single-post {
+.single-post-layout{
   padding: 60px 0;
   background: #fff;
 }
