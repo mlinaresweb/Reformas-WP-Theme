@@ -163,7 +163,7 @@ get_header(); ?>
           <div class="card-icon">
             <img src="http://localhost/reformas/wp-content/uploads/confianza-marron.png" alt="Calidad y Confianza">
           </div>
-          <h3 class="card-title">Calidad y Confianza</h3>
+          <h3 class="card-title">Calidad y <br>Confianza</h3>
           <p class="card-desc">Proyectos que garantizan la mejor calidad y la confianza de nuestros clientes.</p>
         </div>
       <?php endif; ?>
@@ -271,6 +271,7 @@ get_header(); ?>
     <p class="seo-text">
       En El Amrani Khalid Reformas somos expertos en reformas integrales y servicios especializados en albañilería, carpintería, fontanería, electricidad y pintura. Nos encargamos de cada detalle de tu proyecto para ofrecerte soluciones personalizadas, profesionales y de alta calidad. Trabajamos en toda el área de Barcelona y alrededores, adaptándonos a tus necesidades y presupuesto.
     </p>
+    <a href="http://localhost/reformas/contacto/" class="btn-cta-presupuesto">Pide Presupuesto</a>
   </div>
 </section>
 
@@ -301,6 +302,54 @@ get_header(); ?>
 <?php get_footer(); ?>
 
 <script>
+
+(function(){
+  let initialized = false;
+  const MOBILE_MAX = 768;
+
+  function setupReadmore() {
+    const isMobile = window.innerWidth <= MOBILE_MAX;
+    document.querySelectorAll('.servicio-item').forEach(item => {
+      const desc = item.querySelector('.servicio-description');
+      if (!desc) return;
+      // Elimina setups previos
+      desc.classList.remove('expanded');
+      const existingBtn = item.querySelector('.servicio-readmore');
+      if (existingBtn) existingBtn.remove();
+
+      if (isMobile) {
+        // Crear el botón
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'servicio-readmore';
+        btn.textContent = 'Ver más';
+        // Insertar después del párrafo
+        desc.insertAdjacentElement('afterend', btn);
+        // Listener SOLO en el botón
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          if (desc.classList.contains('expanded')) {
+            desc.classList.remove('expanded');
+            btn.textContent = 'Ver más';
+          } else {
+            desc.classList.add('expanded');
+            btn.textContent = 'Ver menos';
+          }
+        });
+      }
+    });
+  }
+
+  // Ejecutar al cargar
+  document.addEventListener('DOMContentLoaded', setupReadmore);
+  // Y al redimensionar, con debounce
+  let resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(setupReadmore, 200);
+  });
+})();
+
 document.addEventListener("DOMContentLoaded", function() {
   const serviceItems = document.querySelectorAll('.servicio-item');
   const galleryImg = document.getElementById('servicio-img');
