@@ -268,7 +268,13 @@ body {
   padding: 80px 0;
   background-color: #fff;
 }
+@media (max-width: 1499px) {
+  .servicios-de-reforma {
+    padding: 0;
+    padding-bottom: 80px;
+  }
 
+}
 .servicios-de-reforma .section-title {
   font-size: 2.5rem;
   margin-bottom: 50px;
@@ -394,6 +400,9 @@ body {
 .servicio-readmore:active {
   outline: none;
   box-shadow: none;
+}
+.seo-text-last{
+display: none;
 }
 }
 
@@ -579,6 +588,7 @@ body {
 .contact-form h2 {
   font-size: 2rem;
   margin-bottom: 20px;
+  padding-bottom: 20px;
   color: #3E2723;
   text-align: center;
 }
@@ -775,7 +785,8 @@ body {
 
 .servicio-intro .intro-layout {
   display: flex;
-  align-items: center;
+  /* Cambiamos align-items de center a stretch */
+  align-items: stretch;
   gap: 40px;
 }
 
@@ -783,28 +794,45 @@ body {
   flex: 1;
   font-size: 1.1rem;
   color: #555;
+  /* Para que el contenedor tenga altura definida */
+  display: flex;
+  flex-direction: column;
+  line-height: 18px;
+}
+.servicio-intro .intro-text p {
+margin-bottom: 6px;
 }
 
+
 .servicio-intro .intro-image {
+  /* Fijamos ancho y permitimos estirarse en altura */
   flex: 0 0 40%;
+  display: flex;
 }
 
 .servicio-intro .intro-image img {
   width: 100%;
-  border-radius: 8px;
+  /* ¡Clave! que ocupe toda la altura del contenedor */
+  height: 100%;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .intro-layout {
     flex-direction: column;
+    align-items: flex-start; /* volvemos a la normalidad */
   }
   .servicio-intro .intro-image {
     width: 100%;
+    /* ya no necesitamos flex en móvil */
+    flex: none;
+  }
+  .servicio-intro .intro-image img {
+    height: auto;
   }
 }
-
 
 
 /* Componente: Proyectos del Servicio (Distribución 1+2) */
@@ -839,11 +867,13 @@ body {
 /* Proyecto en la parte superior de la derecha */
 .project-right-top {
   grid-area: rightTop;
+  max-height: 300px;
 }
 
 /* Proyecto en la parte inferior de la derecha */
 .project-right-bottom {
   grid-area: rightBottom;
+  max-height: 300px;
 }
 
 .project-item {
@@ -920,6 +950,10 @@ body {
       "rightTop"
       "rightBottom";
   }
+  .project-left {
+    max-height: 300px;
+  }
+  
 }
 
 

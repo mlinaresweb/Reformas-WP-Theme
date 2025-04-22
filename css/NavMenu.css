@@ -86,3 +86,135 @@
     color: white;
     font-size: 14px;
   }
+
+  /* --- Botón hamburguesa --- */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px; height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.nav-toggle span {
+  display: block;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+}
+
+/* Contenedor overlay (oculto por defecto) */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #fff;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header dentro del overlay */
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+.mobile-menu-header .logo a {
+  font-size: 1.25rem;
+}
+
+/* Botón cerrar */
+.nav-close {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Menú mobile */
+.mobile-menu {
+  flex: 1;
+  overflow-y: auto;
+}
+.mobile-menu .nav-menu {
+  flex-direction: column;
+  gap: 0;
+  padding: 20px;
+  align-items: flex-start;
+}
+.mobile-menu .nav-menu li {
+  margin-bottom: 1rem;
+}
+.mobile-menu .nav-menu a {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* Cuando el overlay está activo */
+.mobile-menu-overlay.active {
+  transform: translateX(0);
+}
+/* Ocultamos por defecto los submenus */
+.menu-level-1 {
+  display: none;
+}
+
+/* Encabezado de subtítulo en submenús */
+.mobile-submenu-header {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 60px;
+  border-bottom: 1px solid #eee;
+}
+.submenu-back {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #A0522D;
+  cursor: pointer;
+  margin-right: 16px;
+}
+.mobile-submenu-title {
+  font-size: 1.25rem;
+  color: #3E2723;
+  font-weight: 600;
+}
+
+/* Ajustes al ul.nav-menu dentro de submenus */
+.servicios-submenu .nav-menu,
+.proyectos-submenu .nav-menu {
+  padding: 20px;
+}
+.proyectos-submenu, .servicios-submenu{
+  flex-direction: column;
+}
+.servicios-submenu .nav-menu li,
+.proyectos-submenu .nav-menu li {
+  margin-bottom: 1rem;
+}
+
+/* Botón pequeño de flecha junto al enlace */
+.submenu-toggle {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: #333;
+  margin-left: 8px;
+  cursor: pointer;
+}
+.submenu-toggle:focus {
+  outline: none;
+}
+/* Mostrar toggler en móvil y ocultar menú desktop */
+@media (max-width: 992px) {
+  .nav-toggle       { display: flex; }
+  .desktop-menu     { display: none; }
+}
