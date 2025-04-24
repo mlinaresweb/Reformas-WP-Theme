@@ -170,3 +170,33 @@ function handle_contact_page_form() {
   add_action( 'admin_post_nopriv_handle_contact_page_form', 'handle_contact_page_form' );
   add_action( 'admin_post_handle_contact_page_form',        'handle_contact_page_form' );
   
+
+  function reformas_enqueue_lightbox() {
+    // CSS de baguetteBox
+    wp_enqueue_style(
+      'baguettebox-css',
+      'https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.css',
+      array(),
+      '1.11.1'
+    );
+    // JS de baguetteBox
+    wp_enqueue_script(
+      'baguettebox-js',
+      'https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.js',
+      array(),
+      '1.11.1',
+      true
+    );
+    // Inicialización al cargar
+    wp_add_inline_script(
+      'baguettebox-js',
+      "document.addEventListener('DOMContentLoaded', function() {
+         baguetteBox.run('.baguette-gallery', {
+           captions: true,
+           buttons: 'auto',
+         });
+       });"
+    );
+  }
+  add_action('wp_enqueue_scripts', 'reformas_enqueue_lightbox');
+  

@@ -4,7 +4,7 @@
  */
 get_header(); ?>
 
-<main class="single-proyecto">
+<main class="single-proyectos">
   <div class="wrapper-contenido">
 
     <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
@@ -29,24 +29,29 @@ get_header(); ?>
 
       <!-- Galería de imágenes -->
       <section class="proyecto-galeria">
-        <h2>Galería de imágenes</h2>
-        <div class="galeria-grid">
-          <?php
-            $galeria_meta = get_post_meta( get_the_ID(), '_proyecto_galeria', true );
-            if ( $galeria_meta ) {
-              $ids = array_map( 'trim', explode( ',', $galeria_meta ) );
-              foreach ( $ids as $img_id ) {
-                $url = wp_get_attachment_url( $img_id );
-                if ( $url ) : ?>
-                  <div class="galeria-item galeria-item-proyecto">
-                    <img src="<?php echo esc_url( $url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>">
-                  </div>
-          <?php   endif;
-              }
-            }
-          ?>
-        </div>
-      </section>
+  <h2>Galería de imágenes</h2>
+  <div class="galeria-grid baguette-gallery">
+    <?php
+      $galeria_meta = get_post_meta( get_the_ID(), '_proyecto_galeria', true );
+      if ( $galeria_meta ) {
+        $ids = array_map( 'trim', explode( ',', $galeria_meta ) );
+        foreach ( $ids as $img_id ) {
+          $url = wp_get_attachment_url( $img_id );
+          $thumb = wp_get_attachment_image_url( $img_id, 'medium' );
+          if ( $url && $thumb ) : ?>
+            <div class="galeria-item galeria-item-proyecto">
+              <a href="<?php echo esc_url( $url ); ?>" data-caption="<?php echo esc_attr( get_the_title() ); ?>">
+                <img src="<?php echo esc_url( $thumb ); ?>"
+                     alt="<?php echo esc_attr( get_the_title() ); ?>">
+              </a>
+            </div>
+    <?php   endif;
+        }
+      }
+    ?>
+  </div>
+</section>
+
 
       <!-- Trabajos realizados en la reforma -->
       <?php

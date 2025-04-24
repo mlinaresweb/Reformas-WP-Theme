@@ -1551,8 +1551,8 @@ margin-bottom: 6px;
 
 
 /* ==== Single Proyecto ==== */
-.single-proyecto {
-  padding: 60px 0;
+.single-proyectos {
+  padding: 140px 0;
   background: #fff;
   color: #333;
 }
@@ -1640,7 +1640,7 @@ margin-bottom: 6px;
 }
 /* Responsive */
 @media (max-width: 768px) {
-  .single-proyecto {
+  .single-proyectos {
     padding: 40px 0;
   }
   .single-proyecto .proyecto-title {
@@ -1677,4 +1677,19 @@ margin-bottom: 6px;
   .single-proyecto .proyecto-galeria .galeria-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Fondo semitransparente más oscuro */
+.baguetteBox-overlay {
+  background: rgba(0,0,0,0.9) !important;
+}
+/* Botones de navegación más grandes */
+.baguetteBox-next, .baguetteBox-prev {
+  font-size: 2rem !important;
+}
+/* Centrar leyenda */
+.baguetteBox-caption {
+  text-align: center;
+  font-size: 1rem;
+  padding: 10px;
 }
