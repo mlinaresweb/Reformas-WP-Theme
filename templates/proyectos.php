@@ -2,9 +2,26 @@
 /*
 Template Name: Página de Proyectos con Query + Paginación
 */
+
+// 1) Obtener la imagen del banner desde ACF
+$banner_field = get_field('banner_image'); // ACF devuelve array si es tipo imagen
+if ( $banner_field && isset($banner_field['url']) ) {
+  $banner_url = $banner_field['url'];
+} else {
+  // fallback a imagen por defecto
+  $banner_url = site_url('/wp-content/uploads/carpinteria.jpg');
+}
+
+
 get_header(); ?>
 
 <main class="proyectos-galeria">
+    <!-- Banner -->
+<section class="proyecto-banner" style="background-image: url('<?php echo esc_url($banner_url); ?>');">
+  <div class="banner-content">
+    <h1><?php the_title(); ?></h1>
+  </div>
+</section>
   <div class="wrapper-contenido">
 
     <?php
@@ -163,6 +180,45 @@ get_header(); ?>
     <?php endif; ?>
 
   </div><!-- .wrapper-contenido -->
+
+  
+  <!-- Sección SEO antes del formulario -->
+<section class="seo-text-section">
+  <div class="wrapper-contenido">
+    <p class="seo-text">
+      ¡Transforma tu hogar con nuestros servicios de reformas en Barcelona y alrededores!
+    </p>
+    <p class="seo-text">
+      ¿Estás pensando en renovar tu hogar? <span class="span-marron"> ¡Nosotros te ayudamos! </span>
+    </p>
+    <p class="seo-text">
+      En El Amrani Khalid Reformas somos expertos en reformas integrales y servicios especializados en albañilería, carpintería, fontanería, electricidad y pintura. Nos encargamos de cada detalle de tu proyecto para ofrecerte soluciones personalizadas, profesionales y de alta calidad. Trabajamos en toda el área de Barcelona y alrededores, adaptándonos a tus necesidades y presupuesto.
+    </p>
+    <a href="http://localhost/reformas/contacto/" class="btn-cta-presupuesto">Pide Presupuesto</a>
+  </div>
+</section>
+
+
+     <!-- Sección: Contáctanos -->
+<section class="seccion-contacto">
+<div class="wrapper-contenido">
+
+    <div class="contact-layout">
+      
+      <!-- Columna Izquierda: Imagen -->
+      <div class="contact-image" style="background-image: url('<?php echo site_url('/wp-content/uploads/reforma-contacto.jpg'); ?>');">
+        <!-- Este div se encargará de mostrar la imagen como fondo -->
+      </div>
+      
+      <!-- Columna Derecha: Formulario -->
+      <div class="contact-form">
+        <h2>Pide Tu Presupuesto</h2>
+        <?php echo do_shortcode('[custom_contact_form]'); ?>
+      </div>
+      
+    </div><!-- .contact-layout -->
+  </div><!-- .wrapper-contenido -->
+    </section>
 </main>
 
 <?php get_footer(); ?>
