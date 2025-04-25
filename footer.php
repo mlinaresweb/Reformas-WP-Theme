@@ -84,6 +84,6 @@
 
 
 
-<?php wp_footer(); // Importante para cargar scripts de plugins y del propio WP ?>
+<?php wp_footer(); ?>
 </body>
 </html>

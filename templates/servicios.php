@@ -13,36 +13,98 @@ get_header();
     </header>
     
     <div class="servicios-cards">
-      <?php
-        // Recuperamos todos los términos de la taxonomía "servicio"
-        $servicios = get_terms( array(
-          'taxonomy'   => 'servicio',
-          'hide_empty' => false,
-        ) );
-        if( ! empty( $servicios ) && ! is_wp_error( $servicios ) ) :
-          foreach( $servicios as $servicio ) :
-            // En este ejemplo usamos el nombre y la descripción (si la hay)
-            $term_link = get_term_link( $servicio );
-      ?>
-      <div class="servicio-card">
-        <div class="servicio-card-inner">
-          <h2 class="servicio-card-title"><?php echo esc_html( $servicio->name ); ?></h2>
-          <?php if( $servicio->description ) : ?>
-          <p class="servicio-card-desc"><?php echo esc_html( $servicio->description ); ?></p>
-          <?php else: ?>
-          <p class="servicio-card-desc">Descubre más sobre este servicio.</p>
-          <?php endif; ?>
-          <a href="<?php echo esc_url($term_link); ?>" class="btn-servicio-card">Ver servicio</a>
+  <?php
+    $servicios = get_terms([
+      'taxonomy'   => 'servicio',
+      'hide_empty' => false,
+    ]);
+    if ( ! empty( $servicios ) && ! is_wp_error( $servicios ) ) :
+      foreach ( $servicios as $servicio ) :
+        $term_link = get_term_link( $servicio );
+        // Elegimos imagen según slug
+        switch ( $servicio->slug ) {
+          case 'reformas-albanileria':
+            $img_url = site_url('/wp-content/uploads/albañil1.jpg');
+            break;
+          case 'reformas-carpinteria':
+            $img_url = site_url('/wp-content/uploads/carpintero1.jpg');
+            break;
+          case 'reformas-fontaneria':
+            $img_url = site_url('/wp-content/uploads/fontanero1.jpg');
+            break;
+          case 'reformas-electricista':
+            $img_url = site_url('/wp-content/uploads/electricista1.jpg');
+            break;
+          case 'reformas-pintor':
+            $img_url = site_url('/wp-content/uploads/pintor1.jpg');
+            break;
+          default:
+            $img_url = site_url('/wp-content/uploads/default-card.jpg');
+        }
+  ?>
+    <div class="servicio-card">
+      <a href="<?php echo esc_url( $term_link ); ?>" class="servicio-card-link">
+        <!-- Imagen 16:9 -->
+        <div class="servicio-card-image">
+          <img src="<?php echo esc_url( $img_url ); ?>"
+               alt="<?php echo esc_attr( $servicio->name ); ?>">
         </div>
-      </div>
-      <?php
-          endforeach;
-        else:
-          echo '<p>No se han configurado servicios aún.</p>';
-        endif;
-      ?>
-    </div><!-- .servicios-cards -->
+        <!-- Cuerpo flexible -->
+        <div class="servicio-card-body">
+          <h2 class="servicio-card-title"><?php echo esc_html( $servicio->name ); ?></h2>
+          <p class="servicio-card-desc">
+            <?php echo esc_html( $servicio->description ?: 'Descubre más sobre este servicio.' ); ?>
+          </p>
+          <span class="servicio-card-spacer"></span>
+          <button class="btn-servicio-card">Ver servicio</button>
+        </div>
+      </a>
+    </div>
+  <?php
+      endforeach;
+    else:
+      echo '<p>No se han configurado servicios aún.</p>';
+    endif;
+  ?>
+</div>
+
   </div><!-- .wrapper-contenido -->
+
+  <!-- Sección SEO antes del formulario -->
+<section class="seo-text-section">
+  <div class="wrapper-contenido">
+    <p class="seo-text">
+      ¡Transforma tu hogar con nuestros servicios de reformas en Barcelona y alrededores!
+    </p>
+    <p class="seo-text">
+      ¿Estás pensando en renovar tu hogar? <span class="span-marron"> ¡Nosotros te ayudamos! </span>
+    </p>
+    <p class="seo-text seo-text-last">
+      En El Amrani Khalid Reformas somos expertos en reformas integrales y servicios especializados en albañilería, carpintería, fontanería, electricidad y pintura. Nos encargamos de cada detalle de tu proyecto para ofrecerte soluciones personalizadas, profesionales y de alta calidad. Trabajamos en toda el área de Barcelona y alrededores, adaptándonos a tus necesidades y presupuesto.
+    </p>
+    <a href="http://localhost/reformas/contacto/" class="btn-cta-presupuesto">Pide Presupuesto</a>
+  </div>
+</section>
+
+<!-- Sección: Contáctanos -->
+<section class="seccion-contacto">
+  <div class="wrapper-contenido">
+    <div class="contact-layout">
+      
+      <!-- Columna Izquierda: Imagen -->
+      <div class="contact-image" style="background-image: url('<?php echo site_url('/wp-content/uploads/reforma-contacto.jpg'); ?>');">
+        <!-- Este div se encargará de mostrar la imagen como fondo -->
+      </div>
+      
+      <!-- Columna Derecha: Formulario -->
+      <div class="contact-form">
+        <h2>Pide Tu Presupuesto</h2>
+        <?php echo do_shortcode('[custom_contact_form]'); ?>
+      </div>
+      
+    </div><!-- .contact-layout -->
+  </div><!-- .wrapper-contenido -->
+</section>
 </main>
 
 <?php get_footer(); ?>

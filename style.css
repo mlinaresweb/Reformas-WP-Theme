@@ -684,70 +684,138 @@ display: none;
   margin: 0 auto 40px;
 }
 
+/* Grid auto-fit para cards iguales */
 .servicios-cards {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 30px;
-  justify-content: center;
+  
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
+/* Estructura de la card */
 .servicio-card {
   background: #faf7f2;
   border-radius: 8px;
-  padding: 20px;
-  width: calc(33.333% - 20px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
-
 .servicio-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+.servicio-card-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;               /* rellena la card */
+  color: inherit;        /* para que herede color de texto */
+  text-decoration: none; /* quitar subrayado */
+}
+/* 3) Imagen arriba, sin tocarla */
+.servicio-card-image {
+  flex: 0 0 auto;
+}
+/* Imagen 16:9 */
+.servicio-card-image img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
 }
 
-.servicio-card-inner {
+/* Cuerpo flexible: empuja el botón abajo */
+.servicio-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   padding: 20px;
 }
-
 .servicio-card-title {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
   color: #3E2723;
-  margin-bottom: 15px;
 }
-
 .servicio-card-desc {
   font-size: 1rem;
   color: #555;
+  line-height: 1.5;
   margin-bottom: 20px;
 }
-
+.servicio-card-spacer {
+  flex: 1;
+}
 .btn-servicio-card {
-  display: inline-block;
-  padding: 10px 15px;
   background-color: #A0522D;
   color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  align-self: center;
 }
-
 .btn-servicio-card:hover {
   background-color: #7A3E12;
+  transform: translateY(-2px);
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .servicio-card {
-    width: calc(50% - 20px);
+/* Responsive text tweaks */
+@media (max-width: 480px) {
+  .servicio-card-title { font-size: 1.2rem; }
+  .servicio-card-desc  { font-size: 0.95rem; }
+}
+/* Desktop grande: 4 columnas, cards 1,4,5 ocupan 2 columnas */
+@media (min-width: 1200px) {
+  .servicios-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .servicio-card:nth-child(1),
+  .servicio-card:nth-child(4),
+  .servicio-card:nth-child(5) {
+    grid-column: span 2;
+  }
+  .servicios-cards .servicio-card:nth-child(1) .servicio-card-image img {
+    height: 270px;     
+    object-fit: cover;  
   }
 }
 
-@media (max-width: 768px) {
-  .servicio-card {
-    width: 100%;
+/* Tablet grande: 3 columnas, sólo la 1ª card ocupa 2 columnas */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .servicios-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .servicio-card:nth-child(1) {
+    grid-column: span 2;
   }
 }
 
+/* Tablet pequeña: 2 columnas uniformes */
+@media (min-width: 480px) and (max-width: 767px) {
+    /* Última card ocupa las dos columnas */
+    .servicios-cards > .servicio-card:last-child {
+      grid-column: 1 / -1;
+    }
+  .servicios-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* Quitamos spans previos */
+  .servicio-card:nth-child(1),
+  .servicio-card:nth-child(4),
+  .servicio-card:nth-child(5) {
+    grid-column: span 1;
+  }
+}
+
+/* Móvil: 1 columna */
+@media (max-width: 479px) {
+  .servicios-cards {
+    grid-template-columns: 1fr;
+  }
+}
 
 
 /* Página individual del servicio */
