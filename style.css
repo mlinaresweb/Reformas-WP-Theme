@@ -688,7 +688,7 @@ display: none;
 .servicios-cards {
   display: grid;
   gap: 30px;
-  
+  margin-bottom: 80px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
