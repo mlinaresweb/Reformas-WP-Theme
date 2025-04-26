@@ -1208,10 +1208,15 @@ margin-bottom: 6px;
   }
 }
 /* Layout de Contacto */
+.contact-page {
+  padding: 60px 0;
+  background-color: #fff;
+}
 .contact-page .contact-layout {
   display: flex;
   gap: 40px;
-  padding: 60px 0;
+  padding-top:40px;
+  align-items: stretch; 
 }
 
 .contact-info {
@@ -1225,9 +1230,12 @@ margin-bottom: 6px;
 /* Datos de Contacto (mejorados) */
 .contact-info {
   background: #faf7f2;
+  background-image: url("http://localhost/reformas/wp-content/uploads/contacto.jpg");
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  background-size: cover;
+  background-position: center;
 }
 
 .contact-info h2 {
@@ -1246,7 +1254,7 @@ margin-bottom: 6px;
 .contact-item {
   display: flex;
   align-items: center;
-  background: #fff;
+  background: #313131a6;
   border-radius: 6px;
   padding: 12px;
   margin-bottom: 12px;
@@ -1274,11 +1282,12 @@ margin-bottom: 6px;
 }
 
 .contact-text strong {
-  color: #A0522D;
+  color: rgb(201 201 201);
 }
 
 .contact-text a {
-  color: #3E2723;
+  color: #faf7f2;
+  font-weight: bold;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -1326,7 +1335,30 @@ margin-bottom: 6px;
 .btn-contact-submit:hover {
   background-color: #7A3E12;
 }
+/* Ambos paneles serán flex-column para controlar el flujo interno */
+.contact-info,
+.contact-form-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;  /* ← arranca todo desde arriba */
+  border-radius: 8px;
+  background-color: #faf7f2;
+}
 
+/* Eliminamos márgenes “extra” sobre los títulos */
+.contact-info h2,
+.contact-form-section h2 {
+  margin-top: 0;
+}
+
+/* (Opcional) si quieres centrar horizontalmente los títulos dentro de su panel */
+.contact-info h2,
+.contact-form-section h2 {
+  text-align: center;
+} 
+.contact-form-section{
+  padding-top: 30px;
+}
 /* Responsive */
 @media (max-width: 768px) {
   .contact-page .contact-layout {
@@ -1343,10 +1375,15 @@ margin-bottom: 6px;
 
 
 /* === Blog === */
+.blog-grid{
+  padding: 60px 0;
+  background-color: #fff;
+}
 .blog-grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  margin-top: 60px;
 }
 
 /* Tarjeta de post */
