@@ -3,12 +3,26 @@
 Template Name: Página de Servicios
 */
 get_header();
+
+$banner_field = get_field('banner_image'); // ACF devuelve array si es tipo imagen
+if ( $banner_field && isset($banner_field['url']) ) {
+  $banner_url = $banner_field['url'];
+} else {
+  // fallback a imagen por defecto
+  $banner_url = site_url('/wp-content/uploads/carpinteria.jpg');
+}
+
 ?>
 
 <main class="servicios-overall">
+
+<section class="proyecto-banner" style="background-image: url('<?php echo esc_url($banner_url); ?>');">
+  <div class="banner-content">
+    <h1><?php the_title(); ?></h1>
+  </div>
+</section>
   <div class="wrapper-contenido">
     <header class="servicios-header">
-      <h1>Nuestros Servicios</h1>
       <p>Conoce los servicios de reformas integrales que ofrecemos para transformar tu hogar. Descubre cómo podemos ayudarte en albañilería, carpintería, fontanería, electricidad y pintura.</p>
     </header>
     
@@ -24,22 +38,22 @@ get_header();
         // Elegimos imagen según slug
         switch ( $servicio->slug ) {
           case 'reformas-albanileria':
-            $img_url = site_url('/wp-content/uploads/albañil1.jpg');
+            $img_url = site_url('/wp-content/uploads/albañil1.webp');
             break;
           case 'reformas-carpinteria':
-            $img_url = site_url('/wp-content/uploads/carpintero1.jpg');
+            $img_url = site_url('/wp-content/uploads/carpintero1.webp');
             break;
           case 'reformas-fontaneria':
-            $img_url = site_url('/wp-content/uploads/fontanero1.jpg');
+            $img_url = site_url('/wp-content/uploads/fontanero1.webp');
             break;
           case 'reformas-electricista':
-            $img_url = site_url('/wp-content/uploads/electricista1.jpg');
+            $img_url = site_url('/wp-content/uploads/electricista1.webp');
             break;
           case 'reformas-pintor':
-            $img_url = site_url('/wp-content/uploads/pintor1.jpg');
+            $img_url = site_url('/wp-content/uploads/pintor1.webp');
             break;
           default:
-            $img_url = site_url('/wp-content/uploads/default-card.jpg');
+            $img_url = site_url('/wp-content/uploads/default-card.webp');
         }
   ?>
     <div class="servicio-card">
@@ -92,7 +106,7 @@ get_header();
     <div class="contact-layout">
       
       <!-- Columna Izquierda: Imagen -->
-      <div class="contact-image" style="background-image: url('<?php echo site_url('/wp-content/uploads/reforma-contacto.jpg'); ?>');">
+      <div class="contact-image" style="background-image: url('<?php echo site_url('/wp-content/uploads/reforma-contacto.webp'); ?>');">
         <!-- Este div se encargará de mostrar la imagen como fondo -->
       </div>
       

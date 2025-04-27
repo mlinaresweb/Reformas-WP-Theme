@@ -78,7 +78,7 @@
     <div class="contact-layout">
       
       <!-- Columna Izquierda: Imagen -->
-      <div class="contact-image" style="background-image: url('<?php echo site_url('/wp-content/uploads/reforma-contacto.jpg'); ?>');">
+      <div class="contact-image" style="background-image: url('<?php echo site_url('/wp-content/uploads/reforma-contacto.webp'); ?>');">
         <!-- Este div se encargará de mostrar la imagen como fondo -->
       </div>
       

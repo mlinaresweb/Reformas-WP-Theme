@@ -70,30 +70,7 @@ if ( $banner_field && isset($banner_field['url']) ) {
     <!-- Columna Derecha: Formulario -->
     <section class="contact-form-section">
       <h2>Pide tu presupuesto</h2>
-      <form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" class="contact-form">
-        <?php wp_nonce_field( 'contact_page_form', 'contact_page_nonce' ); ?>
-        <input type="hidden" name="action" value="handle_contact_page_form">
-
-        <p>
-          <label for="cp_name">Nombre</label>
-          <input type="text" id="cp_name" name="contact_name" required>
-        </p>
-        <p>
-          <label for="cp_email">Correo electrónico</label>
-          <input type="email" id="cp_email" name="contact_email" required>
-        </p>
-        <p>
-          <label for="cp_phone">Teléfono</label>
-          <input type="tel" id="cp_phone" name="contact_phone">
-        </p>
-        <p>
-          <label for="cp_message">Mensaje</label>
-          <textarea id="cp_message" name="contact_message" rows="5" required></textarea>
-        </p>
-        <p>
-          <button type="submit" class="btn-contact-submit">Enviar</button>
-        </p>
-      </form>
+      <?php echo do_shortcode('[custom_contact_form]'); ?>
     </section>
 
   </div><!-- .contact-layout -->
