@@ -45,7 +45,7 @@ get_header(); ?>
       <div class="servicios-gallery">
         <?php
           // Imagen por defecto para la galería
-          $default_img = site_url('/wp-content/uploads/reformas.jpg');
+          $default_img = site_url('/wp-content/uploads/reformas.webp');
         ?>
         <img src="<?php echo esc_url( $default_img ); ?>" alt="Servicio Destacado" id="servicio-img">
       </div>
@@ -64,28 +64,28 @@ get_header(); ?>
               $icon_image_url = '';
               switch( $servicio->slug ) {
                 case 'reformas-albanileria':
-                    $gallery_image_url = site_url('/wp-content/uploads/albañileria.jpg');
-                    $icon_image_url    = site_url('/wp-content/uploads/albañil-marron.png');
+                    $gallery_image_url = site_url('/wp-content/uploads/albañileria.webp');
+                    $icon_image_url    = site_url('/wp-content/uploads/albañil-marron.webp');
                     break;
                 case 'reformas-carpinteria':
-                    $gallery_image_url = site_url('/wp-content/uploads/carpinteria.jpg');
-                    $icon_image_url    = site_url('/wp-content/uploads/carpintero-marron.png');
+                    $gallery_image_url = site_url('/wp-content/uploads/carpinteria.webp');
+                    $icon_image_url    = site_url('/wp-content/uploads/carpintero-marron.webp');
                     break;
                 case 'reformas-fontaneria':
-                    $gallery_image_url = site_url('/wp-content/uploads/fontaneria.jpg');
-                    $icon_image_url    = site_url('/wp-content/uploads/fontanero-marron.png');
+                    $gallery_image_url = site_url('/wp-content/uploads/fontaneria.webp');
+                    $icon_image_url    = site_url('/wp-content/uploads/fontanero-marron.webp');
                     break;
                 case 'reformas-electricista':
-                    $gallery_image_url = site_url('/wp-content/uploads/lampista.jpg');
-                    $icon_image_url    = site_url('/wp-content/uploads/electricista-marron.png');
+                    $gallery_image_url = site_url('/wp-content/uploads/lampista.webp');
+                    $icon_image_url    = site_url('/wp-content/uploads/electricista-marron.webp');
                     break;
                 case 'reformas-pintor':
-                    $gallery_image_url = site_url('/wp-content/uploads/pintura.jpg');
-                    $icon_image_url    = site_url('/wp-content/uploads/pintor-marron.png');
+                    $gallery_image_url = site_url('/wp-content/uploads/pintura.webp');
+                    $icon_image_url    = site_url('/wp-content/uploads/pintor-marron.webp');
                     break;
                 default:
-                    $gallery_image_url = site_url('/wp-content/uploads/reformas.jpg');
-                    $icon_image_url    = site_url('/wp-content/uploads/albañil-marron.png');
+                    $gallery_image_url = site_url('/wp-content/uploads/reformas.webp');
+                    $icon_image_url    = site_url('/wp-content/uploads/albañil-marron.webp');
                     break;
             }
             

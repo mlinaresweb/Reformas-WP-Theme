@@ -9,7 +9,7 @@ if ( $banner_field && isset($banner_field['url']) ) {
   $banner_url = $banner_field['url'];
 } else {
   // fallback a imagen por defecto
-  $banner_url = site_url('/wp-content/uploads/carpinteria.jpg');
+  $banner_url = site_url('/wp-content/uploads/banner-servicios.jpg');
 }
 
 ?>
