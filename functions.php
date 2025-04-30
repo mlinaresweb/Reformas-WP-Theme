@@ -16,6 +16,12 @@ require_once get_template_directory() . '/inc/components/service-projects.php';
 // componente CTA Presupuesto
 require_once get_template_directory() . '/inc/components/cta-presupuesto.php';
 
+// componente SEO + CTA
+require_once get_template_directory() . '/inc/components/seo-cta.php';
+
+// componente Sección de Contacto
+require_once get_template_directory() . '/inc/components/contact-section.php';
+
 
   // Soporte para título dinámico en la cabecera
   add_theme_support('title-tag');
