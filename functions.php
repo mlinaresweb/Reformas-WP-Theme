@@ -163,7 +163,63 @@ add_filter( 'wp_resource_hints', 'mytheme_resource_hints', 10, 2 );
       return $sorted_menu_items;
   }
   
+/**
+ * Pinta los enlaces activos del bloque “Proyectos”.
+ * – En /proyectos solo se resalta el enlace “Proyectos”.
+ * – En /proyectos‑xxx/ se resalta “Proyectos” y el sub‑enlace que
+ *   coincide con /proyectos‑xxx/.
+ */
+add_filter( 'nav_menu_css_class', 'reformas_set_projects_active', 10, 4 );
+function reformas_set_projects_active( $classes, $item, $args, $depth ) {
 
+    /* Solo queremos afectar al menú principal ---------------------------- */
+    if ( empty( $args->theme_location ) || $args->theme_location !== 'menu_principal' ) {
+        return $classes;
+    }
+
+    /* Ruta actual sin dominio ni barra final ---------------------------- */
+    global $wp;
+    $current_path = '/' . untrailingslashit( $wp->request );     // ej:  /proyectos
+    $item_path    = untrailingslashit( parse_url( $item->url, PHP_URL_PATH ) ); // ej: /proyectos-albanileria
+
+    /* 1. Página global de proyectos (/proyectos) ------------------------ */
+    if ( $current_path === '/proyectos' ) {
+
+        // Si es el enlace padre “Proyectos” => lo marcamos
+        if ( trim( $item->title ) === 'Proyectos' || $item_path === '/proyectos' ) {
+            $classes[] = 'current-menu-item';
+        }
+        // En cualquier otro caso aseguramos que NO quede marcado
+        else {
+            $classes = array_diff( $classes, [ 'current-menu-item', 'current_page_item',
+                                               'current-menu-parent', 'current-menu-ancestor' ] );
+        }
+        return $classes;
+    }
+
+    /* 2. Páginas /proyectos-xxx/  -------------------------------------- */
+    if ( preg_match( '#^/proyectos-([^/]+)$#', $current_path, $m ) ) {
+
+        $service_slug = $m[1];                     // ej: albanileria
+        $expected     = '/proyectos-' . $service_slug;
+
+        // Padre “Proyectos”
+        if ( trim( $item->title ) === 'Proyectos' || $item_path === '/proyectos' ) {
+            $classes[] = 'current-menu-item';
+        }
+
+        // Sub‑enlace exacto
+        if ( $item_path === $expected ) {
+            $classes[] = 'current-menu-item';
+        }
+        return $classes;
+    }
+
+    /* 3. Cualquier otra URL – no tocamos nada --------------------------- */
+    return $classes;
+}
+
+  
   function servicio_admin_enqueue_scripts($hook) {
     // Cargar solo en las páginas de edición de términos
     if ( $hook === 'term.php' || $hook === 'edit-tags.php' ) {
@@ -236,4 +292,5 @@ function handle_contact_page_form() {
     );
   }
   add_action('wp_enqueue_scripts', 'reformas_enqueue_lightbox');
+  
   

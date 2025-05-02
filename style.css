@@ -80,6 +80,9 @@ body {
   strong{
     color: #A0522D;
   }
+  h1, h2, h3, h4, h5, h6{
+    color: #3E2723;
+  }
   .span-marron{
     color: #A0522D;
     font-weight: 700;
