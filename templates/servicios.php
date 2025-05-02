@@ -22,9 +22,7 @@ if ( $banner_field && isset($banner_field['url']) ) {
   </div>
 </section>
   <div class="wrapper-contenido">
-    <header class="servicios-header">
-      <p>Conoce los servicios de reformas integrales que ofrecemos para transformar tu hogar. Descubre cómo podemos ayudarte en albañilería, carpintería, fontanería, electricidad y pintura.</p>
-    </header>
+
     
     <div class="servicios-cards">
   <?php
