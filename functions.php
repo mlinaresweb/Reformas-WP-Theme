@@ -78,6 +78,37 @@ function reformas_add_editor_styles() {
   }
   add_action('wp_enqueue_scripts', 'mi_tema_scripts');
   
+  function mytheme_enqueue_fonts() {
+    // 1. Registrar la hoja de estilo de Google Fonts
+    wp_register_style(
+        'mytheme-roboto',
+        'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap',
+        [],          // sin dependencias
+        null         // deja que WP gestione la versión con la URL
+    );
+
+    // 2. Encolarla (enqueue)
+    wp_enqueue_style('mytheme-roboto');
+}
+add_action('wp_enqueue_scripts', 'mytheme_enqueue_fonts');
+
+
+/**
+ * Añade resource hints (<link rel="preconnect">) para mejorar el rendimiento.
+ */
+function mytheme_resource_hints( $urls, $relation_type ) {
+    if ( 'preconnect' === $relation_type ) {
+        $urls[] = 'https://fonts.googleapis.com';
+        // with crossorigin attribute
+        $urls[] = [
+            'href'        => 'https://fonts.gstatic.com',
+            'crossorigin' => true,
+        ];
+    }
+    return $urls;
+}
+add_filter( 'wp_resource_hints', 'mytheme_resource_hints', 10, 2 );
+
   add_filter('wp_nav_menu_objects', 'add_projects_submenu_items', 10, 2);
   function add_projects_submenu_items($sorted_menu_items, $args) {
       // Limita el filtro al menú principal (ajusta 'menu_principal' si es necesario)

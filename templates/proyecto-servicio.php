@@ -53,11 +53,7 @@ get_header(); ?>
     <div class="proyectos-seo-text">
       <p>
         En <strong><?php echo esc_html( $term->name ); ?></strong> transformamos espacios con reformas profesionales en Barcelona y alrededores, adaptándonos a cada necesidad y presupuesto.
-      </p>
-      <p>
         Explora nuestra selección de proyectos de <?php echo esc_html( $term->name ); ?>, donde combinamos materiales de primera y mano de obra experta para conseguir resultados duraderos y estéticos.
-      </p>
-      <p>
         Cada trabajo refleja nuestra pasión por la excelencia: descubre técnicas innovadoras de <?php echo esc_html( $term->name ); ?>, acabados impecables y testimonios de clientes satisfechos.
       </p>
     </div>

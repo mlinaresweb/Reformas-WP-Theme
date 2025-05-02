@@ -47,6 +47,10 @@ body {
   line-height: 1;
 }
 
+html,
+body {
+  font-family: "Roboto", sans-serif !important;
+}
 /* Quitar estilos de listas */
 ol, ul {
   list-style: none;
@@ -72,10 +76,13 @@ table {
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    /* max-width: 1400px;
-    margin: 0 auto;
-    padding: 10px 20px; */
+  }
+  strong{
+    color: #A0522D;
+  }
+  .span-marron{
+    color: #A0522D;
+    font-weight: 700;
   }
   .custom-logo{
     width: 140px;
@@ -141,27 +148,28 @@ body {
     position: relative;
   }
 .hero-contenedor{
-  background: rgb(255 255 255);
-  width: 400px;
+  background: rgb(255 255 255 / 40%);
+  width: 500px;
   padding: 40px;
   border-radius: 12px;
   height: auto;
 }
 .hero-content h1{
-  font-size: 32px;
+  font-size: 36px;
   text-transform: uppercase;
   margin-bottom: 2px;
   color: #3e2723;
 }
 .hero-content h2{
-  font-size: 30px;
+  font-size: 44px;
   text-transform: uppercase;
   margin-bottom: 18px;
   color: #3e2723;
 }
 .hero-content p{
   margin-bottom: 28px;
-  color: #212121;
+  font-size: 18px;
+  color: #3e2723;
 }
 .btn-hero{
   background-color: #a0522d;
@@ -174,7 +182,9 @@ body {
   padding: 10px 40px;
   border-radius: 6px;
 }
-
+.btn-hero:hover{
+  background-color: #7A3E12;
+}
   @media screen and (min-width: 1500px) {
     .hero-home{
       height: 70vh;
@@ -1645,11 +1655,14 @@ margin-bottom: 6px;
 /* Texto SEO bajo el título de proyectos */
 .proyectos-header {
   margin-bottom: 40px;
-  text-align: center;
+  margin-top: 60px;
+  text-align: left;
 }
-
+.proyectos-header h1{
+  color: #3E2723;
+}
 .proyectos-header .proyectos-seo-text {
-  max-width: 800px;
+
   margin: 20px auto 0;
   color: #555;
   line-height: 1.6;
@@ -1669,7 +1682,6 @@ margin-bottom: 6px;
 @media (max-width: 768px) {
   .proyectos-header .proyectos-seo-text {
     margin: 16px auto 0;
-    padding: 0 16px;
     font-size: 0.9rem;
   }
 }
@@ -1929,7 +1941,7 @@ margin-bottom: 6px;
   transition: background 0.2s ease;
 }
 .footer-social a:hover {
-  background: #A0522D;
+  background: #b9b9b9;
 }
 .footer-social img {
   width: 20px; height: 20px;
