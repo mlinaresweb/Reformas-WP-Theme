@@ -1541,6 +1541,7 @@ margin-bottom: 6px;
 /* === Entrada Individual === */
 .single-post-layout{
   padding: 120px 0;
+  padding-bottom: 20px;
   background: #fff;
 }
 
@@ -1694,6 +1695,7 @@ margin-bottom: 6px;
 /* ==== Single Proyecto ==== */
 .single-proyectos {
   padding: 140px 0;
+  padding-bottom: 20px;
   background: #fff;
   color: #333;
 }
@@ -1783,6 +1785,7 @@ margin-bottom: 6px;
 @media (max-width: 768px) {
   .single-proyectos {
     padding: 120px 0;
+    padding-bottom: 20px;
   }
   .single-proyecto .proyecto-title {
     font-size: 2rem;
