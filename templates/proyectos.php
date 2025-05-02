@@ -124,7 +124,7 @@ get_header(); ?>
 
           // Clases para “irregularidad”. Solo si hay ~8 o más en esta página
           $clase_size = '';
-          if($count_this_page >= 9) {
+          if($count_this_page >= 11) {
             if($index % 7 == 0) $clase_size = ' grid-item-large';
             elseif($index % 5 == 0) $clase_size = ' grid-item-wide';
           }
