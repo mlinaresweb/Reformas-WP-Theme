@@ -354,3 +354,8 @@ add_action( 'acf/init', function () {
 		],
 	]);
 });
+
+// Tamaño fijo 640×360 px, recorte duro (true)
+add_action( 'after_setup_theme', function () {
+	add_image_size( 'servicio-card', 640, 360, true );
+} );

@@ -163,16 +163,18 @@ body {
   margin-bottom: 2px;
   color: #3e2723;
 }
-.hero-content h2{
-  font-size: 44px;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-  color: #3e2723;
-}
+
 .hero-content p{
   margin-bottom: 28px;
   font-size: 18px;
   color: #3e2723;
+}
+.hero-heading{
+  font-size: 44px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 18px !important; 
+  color: #3e2723 !important;
+  font-weight: bold;
 }
 .btn-hero{
   background-color: #a0522d;
@@ -671,7 +673,7 @@ display: none;
     flex: 1 1 100%;
   }
   .contact-image {
-    height: 250px; /* Altura fija para la imagen en móvil */
+    height: 250px; 
     flex: auto !important;
   }
 }
@@ -704,7 +706,7 @@ display: none;
 .servicios-cards {
   display: grid;
   gap: 30px;
-  margin-top: 60px;
+  margin-top: 40px;
   margin-bottom: 60px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   text-align: center;
@@ -794,7 +796,7 @@ display: none;
     grid-column: span 2;
   }
   .servicios-cards .servicio-card:nth-child(1) .servicio-card-image img {
-    height: 270px;     
+    height: 440px;    
     object-fit: cover;  
   }
 }
@@ -1103,10 +1105,14 @@ margin-bottom: 6px;
   padding-bottom:0 ;
   background-color: #fff;
 }
-
+.seo-intro{
+  margin: 20px auto 0;
+    color: #555;
+    line-height: 1.6;
+}
 .filtros-proyectos {
   text-align: center;
-  margin-top: 60px;
+  margin-top: 40px;
   margin-bottom: 40px;
 }
 

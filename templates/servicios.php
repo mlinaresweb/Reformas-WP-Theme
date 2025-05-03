@@ -3,6 +3,15 @@
 /*
 Template Name: Página de Servicios
 */
+
+$canonical = get_permalink();      
+
+add_action( 'wp_head', function() use ( $canonical ) {
+	echo '<link rel="canonical" href="' . esc_url( $canonical ) . '">';
+}, 9 );
+
+
+
 get_header();
 
 ?>
@@ -14,7 +23,19 @@ get_header();
 
   <div class="wrapper-contenido">
 
-    
+     <!-- Encabezado SEO -->
+  <div class="proyectos-header">
+
+	<h2 class="page-title-seo">Servicios de Reformas Integrales en Barcelona y Alrededores</h2>
+
+	<p class="seo-intro">
+		Especialistas en <strong>albañilería, carpintería, fontanería, electricidad y pintura</strong> 
+		en Barcelona y Alrededores. Descubre cómo transformamos hogares y negocios combinando materiales de primera calidad,
+		mano de obra experta y precios transparentes.
+	</p>
+
+</div>
+
     <div class="servicios-cards">
   <?php
     $servicios = get_terms([
@@ -49,8 +70,28 @@ get_header();
       <a href="<?php echo esc_url( $term_link ); ?>" class="servicio-card-link">
         <!-- Imagen 16:9 -->
         <div class="servicio-card-image">
-          <img src="<?php echo esc_url( $img_url ); ?>"
-               alt="<?php echo esc_attr( $servicio->name ); ?>">
+        <?php
+$img_id = attachment_url_to_postid( $img_url );
+
+if ( $img_id ) {
+	echo wp_get_attachment_image(
+		$img_id,
+		'servicio-card',           // 640×360 hard‑crop
+		false,
+		[
+			'class'   => 'card-img',                
+			'loading' => 'lazy',
+			'alt'     => 'Servicio de ' . strtolower( $servicio->name ),
+		]
+	);
+} else {
+	printf(
+		'<img loading="lazy" width="640" height="360" class="card-img" src="%s" alt="%s">',
+		esc_url( $img_url ),
+		esc_attr( 'Servicio de ' . strtolower( $servicio->name ) )
+	);
+}
+?>
         </div>
         <!-- Cuerpo flexible -->
         <div class="servicio-card-body">
@@ -81,4 +122,32 @@ get_header();
 
 </main>
 
-<?php get_footer(); ?>
+
+<?php 
+
+// ========= JSON‑LD ItemList para los 5 servicios =========
+if ( ! empty( $servicios ) && ! is_wp_error( $servicios ) ) {
+	$items = [];
+	$pos   = 1;
+	foreach ( $servicios as $s ) {
+		$items[] = [
+			'@type'    => 'ListItem',
+			'position' => $pos++,
+			'name'     => $s->name,
+			'url'      => get_term_link( $s ),
+		];
+	}
+	$schema = [
+		'@context'         => 'https://schema.org',
+		'@type'            => 'ItemList',
+		'name'             => 'Servicios de Reformas',
+		'itemListElement'  => $items,
+	];
+	echo '<script type="application/ld+json">' .
+	     wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) .
+	     '</script>';
+}
+
+get_footer(); 
+
+?>

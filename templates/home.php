@@ -1,36 +1,31 @@
 <?php
+
 /*
 Template Name: Plantilla Home (Reformas)
 */
-get_header(); ?>
+
+get_header(); 
+
+?>
 
 <main class="home-site main-content">
-  <!-- Sección Hero con imagen de fondo editable -->
-  <?php 
-    // Obtener la imagen de fondo del campo ACF
-    $hero_bg_image = get_field('hero_background_image'); 
 
-    // Si no hay imagen, usar la imagen por defecto
-    if( !$hero_bg_image ) {
-      // Usamos site_url() para obtener la URL base y apuntar a la imagen en uploads
-      $hero_bg_image = site_url('/wp-content/uploads/header-opt.webp');
-    } else {
-      // Si se selecciona una imagen en ACF, se obtiene el URL de la imagen (asumiendo que ACF devuelve un array)
-      $hero_bg_image = $hero_bg_image['url'];
-    }
-  ?>
+<?php
+$hero_bg = get_field('hero_background_image');
+$hero_bg_url = $hero_bg ? $hero_bg['url'] : site_url('/wp-content/uploads/header-opt.webp');
+?>
 
   <section class="hero-home">
   <div class="hero-wrrapper wrapper-contenido">
     <div class="hero-contenedor">
-  <div class="hero-content">
+  <header  class="hero-content">
     <h1><?php the_field('titulo_subhero'); ?></h1>
-      <h2><?php the_field('titulo_hero'); ?></h2>
+      <p class="hero-heading"><?php the_field('titulo_hero'); ?></p>
       <p><?php the_field('texto_hero'); ?></p>
       <a href="<?php the_field('link_boton_hero'); ?>" class="btn-hero">
         <?php the_field('texto_boton_hero'); ?>
       </a>
-    </div>
+    </header >
     </div>
     </div>
   </section>
@@ -47,7 +42,7 @@ get_header(); ?>
           // Imagen por defecto para la galería
           $default_img = site_url('/wp-content/uploads/reformas.webp');
         ?>
-        <img src="<?php echo esc_url( $default_img ); ?>" alt="Servicio Destacado" id="servicio-img">
+        <img loading="lazy" src="<?php echo esc_url( $default_img ); ?>" alt="Servicios Reforma Integral Barcelona" id="servicio-img">
       </div>
       
       <!-- Columna Derecha: Lista de Servicios -->
@@ -92,7 +87,9 @@ get_header(); ?>
         ?>
         <div class="servicio-item" data-image="<?php echo esc_url( $gallery_image_url ); ?>">
           <div class="servicio-icon">
-            <img src="<?php echo esc_url( $icon_image_url ); ?>" alt="<?php echo esc_attr( $servicio->name ); ?> Icono">
+          <img loading="lazy"
+            src="<?php echo esc_url( $icon_image_url ); ?>"
+            alt="<?php echo esc_attr( $servicio->name . ' – icono' ); ?>">
           </div>
           <div class="servicio-info">
             <h3 class="servicio-title"><?php echo esc_html( $servicio->name ); ?></h3>
@@ -118,7 +115,6 @@ get_header(); ?>
 <!-- Sección Por qué Elegirnos -->
 <section class="porque-elegirnos">
   <div class="wrapper-contenido">
-    <h2 class="section-title"><?php the_field('titulo_elegirnos'); ?></h2>
     <h2 class="section-title">¿ Por que elegirnos ?</h2>
     <div class="cards-container">
       <?php if( have_rows('elegirnos_cards') ): ?>
@@ -129,7 +125,7 @@ get_header(); ?>
               if( $icon ): 
             ?>
               <div class="card-icon">
-                <img src="<?php echo esc_url($icon['url']); ?>" alt="<?php echo esc_attr($icon['alt']); ?>">
+                <img loading="lazy" src="<?php echo esc_url($icon['url']); ?>" alt="<?php echo esc_attr($icon['alt']); ?>">
               </div>
             <?php endif; ?>
             <h3 class="card-title"><?php the_sub_field('titulo_card'); ?></h3>
@@ -140,28 +136,28 @@ get_header(); ?>
         <!-- Fallback: cards predeterminadas -->
         <div class="card">
           <div class="card-icon">
-            <img src="http://localhost/reformas/wp-content/uploads/ahorro-marron.png" alt="Mejor Relación Calidad-Precio">
+            <img loading="lazy" src="http://localhost/reformas/wp-content/uploads/ahorro-marron.png" alt="Mejor Relación Calidad-Precio">
           </div>
           <h3 class="card-title">Mejor Relación Calidad-Precio</h3>
           <p class="card-desc">Obtén la máxima calidad en reformas sin comprometer tu presupuesto.</p>
         </div>
         <div class="card">
           <div class="card-icon">
-            <img src="http://localhost/reformas/wp-content/uploads/presupuesto-marron.png" alt="Presupuestos Transparentes">
+            <img loading="lazy" src="http://localhost/reformas/wp-content/uploads/presupuesto-marron.png" alt="Presupuestos Transparentes">
           </div>
           <h3 class="card-title">Presupuestos Transparentes</h3>
           <p class="card-desc">Conoce cada detalle y costo de tu proyecto desde el inicio, sin sorpresas.</p>
         </div>
         <div class="card">
           <div class="card-icon">
-            <img src="http://localhost/reformas/wp-content/uploads/experiencia-marron.png" alt="Experiencia Profesional">
+            <img loading="lazy" src="http://localhost/reformas/wp-content/uploads/experiencia-marron.png" alt="Experiencia Profesional">
           </div>
           <h3 class="card-title">Experiencia Profesional</h3>
           <p class="card-desc">Años de experiencia respaldan nuestro compromiso con la excelencia.</p>
         </div>
         <div class="card">
           <div class="card-icon">
-            <img src="http://localhost/reformas/wp-content/uploads/confianza-marron.png" alt="Calidad y Confianza">
+            <img loading="lazy" src="http://localhost/reformas/wp-content/uploads/confianza-marron.png" alt="Calidad y Confianza">
           </div>
           <h3 class="card-title">Calidad y <br>Confianza</h3>
           <p class="card-desc">Proyectos que garantizan la mejor calidad y la confianza de nuestros clientes.</p>
@@ -188,7 +184,6 @@ get_header(); ?>
       <!-- Columna Derecha (70%) -->
       <div class="galeria-items">
         <?php
-          // Primero, obtener proyectos destacados
           $args_featured = array(
             'post_type'      => 'proyecto',
             'posts_per_page' => 4,
@@ -221,21 +216,17 @@ get_header(); ?>
           
           if ( ! empty( $projects ) ) {
             foreach ( $projects as $project ) {
-              // Intentar obtener la galería del proyecto (se guarda como cadena de IDs separados por comas)
               $gallery_ids = get_post_meta( $project->ID, '_proyecto_galeria', true );
               $project_img = '';
               if( !empty($gallery_ids) ) {
-                  // Convertir la cadena a un array
                   $gallery_ids_array = array_map('trim', explode(',', $gallery_ids));
                   if( !empty($gallery_ids_array[0]) ) {
                       $project_img = wp_get_attachment_url( $gallery_ids_array[0] );
                   }
               }
-              // Si no se obtuvo imagen de la galería, usar la imagen destacada
               if ( empty($project_img) ) {
                   $project_img = get_the_post_thumbnail_url($project->ID, 'medium');
               }
-              // Si sigue sin haber imagen, usar la imagen por defecto
               if ( empty($project_img) ) {
                   $project_img = site_url('/wp-content/uploads/default-project.jpg');
               }
@@ -245,7 +236,7 @@ get_header(); ?>
                   <div class="item-overlay">
                     <h3 class="item-title"><?php echo esc_html(get_the_title($project->ID)); ?></h3>
                   </div>
-                  <img src="<?php echo esc_url($project_img); ?>" alt="<?php echo esc_attr(get_the_title($project->ID)); ?>">
+                  <img loading="lazy" src="<?php echo esc_url($project_img); ?>" alt="<?php echo esc_attr(get_the_title($project->ID)); ?>">
                 </a>
               </div>
               <?php

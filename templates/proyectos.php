@@ -1,33 +1,98 @@
 <?php
-
 /*
-Template Name: Página de Proyectos con Query + Paginación
+Template Name: Página de Proyectos
 */
 
-get_header(); 
+/* --- filtro por servicio ( ?servicio=slug ) ------------------------ */
+$servicios   = get_terms( [ 'taxonomy'=>'servicio', 'hide_empty'=>false ] );
+$filtro_slug = isset( $_GET['servicio'] ) ? sanitize_text_field( $_GET['servicio'] ) : '';
 
+/* --- paginación ---------------------------------------------------- */
+$paged = get_query_var( 'paged' ) ? (int) get_query_var( 'paged' ) : 1;
+
+/* --- base canonical ------------------------------------------------ */
+$base_url = get_permalink();                      
+$canonical_base = $filtro_slug
+    ? add_query_arg( 'servicio', $filtro_slug, $base_url )
+    : remove_query_arg( [ 'servicio' ], $base_url );
+
+/* --- WP_Query (se usará más abajo para mostrar la galería) --------- */
+$args = [
+    'post_type'      => 'proyecto',
+    'posts_per_page' => 11,
+    'paged'          => $paged,
+    'orderby'        => 'date',
+    'order'          => 'DESC',
+];
+
+if ( $filtro_slug ) {
+    $args['tax_query'] = [
+        [
+            'taxonomy' => 'servicio',
+            'field'    => 'slug',
+            'terms'    => $filtro_slug,
+        ],
+    ];
+}
+
+$query_proyectos = new WP_Query( $args );
+
+/* --- etiquetas canonical / prev / next ----------------------------- */
+add_action(
+    'wp_head',
+    function () use ( $canonical_base, $paged, $query_proyectos ) {
+
+        /* canonical de la página actual */
+        $canonical = ( $paged > 1 )
+            ? add_query_arg( 'paged', $paged, $canonical_base )
+            : $canonical_base;
+
+        echo '<link rel="canonical" href="' . esc_url( $canonical ) . '">' . PHP_EOL;
+
+        /* prev / next cuando proceda */
+        if ( $paged > 1 ) {
+            $prev = ( $paged - 1 ) === 1
+                ? $canonical_base
+                : add_query_arg( 'paged', $paged - 1, $canonical_base );
+            echo '<link rel="prev" href="' . esc_url( $prev ) . '">' . PHP_EOL;
+        }
+
+        if ( $paged < $query_proyectos->max_num_pages ) {
+            $next = add_query_arg( 'paged', $paged + 1, $canonical_base );
+            echo '<link rel="next" href="' . esc_url( $next ) . '">' . PHP_EOL;
+        }
+    },
+    9  
+);
+
+get_header();
 ?>
 
 <main class="proyectos-galeria">
-  
+
      <!-- Sección Banner -->
   <?php echo do_shortcode('[page_banner]'); ?>
 
   <div class="wrapper-contenido">
 
-    <?php
-    // Obtener los términos de la taxonomía “servicio” para crear los filtros
-    $servicios = get_terms(array(
-      'taxonomy'   => 'servicio',
-      'hide_empty' => false,
-    ));
+  <!-- Encabezado SEO -->
+  <div class="proyectos-header">
+	<h2 class="page-title-seo">Nuestros Proyectos de Reformas</h2>
 
-    // Detectar si hay un filtro en la query (ej: ?servicio=albanileria)
-    $filtro_slug = isset($_GET['servicio']) ? sanitize_text_field($_GET['servicio']) : '';
-
-    // Página actual (para la paginación)
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-    ?>
+	<?php if ( $filtro_slug && $serv_term = get_term_by( 'slug', $filtro_slug, 'servicio' ) ) : ?>
+		<p class="seo-intro">
+			Explora nuestra selección de <strong>proyectos de <?php echo esc_html( $serv_term->name ); ?></strong>
+			en Barcelona y alrededores. Trabajos reales que muestran la calidad de nuestros acabados,
+			la elección de materiales premium y la satisfacción de cada cliente.
+		</p>
+	<?php else : ?>
+		<p class="seo-intro">
+			Conoce cómo transformamos viviendas y negocios a través de <strong>reformas integrales
+			y parciales</strong> en Barcelona y alrededores. Descubre ideas, materiales y soluciones que marcan la diferencia
+			en cada espacio.
+		</p>
+	<?php endif; ?>
+</div>
 
     <!-- Barra de Filtros -->
     <div class="filtros-proyectos">
@@ -60,85 +125,70 @@ get_header();
     </div><!-- .filtros-proyectos -->
 
     <?php
-    // Construir WP_Query con paginación + filtro
-    $args = array(
-      'post_type'      => 'proyecto',
-      'posts_per_page' => 11,
-      'paged'          => $paged,
-      'orderby'        => 'date',
-      'order'          => 'DESC',
-    );
-
-    if($filtro_slug !== ''){
-      $args['tax_query'] = array(
-        array(
-          'taxonomy' => 'servicio',
-          'field'    => 'slug',
-          'terms'    => $filtro_slug,
-        )
-      );
-    }
-    $query_proyectos = new WP_Query($args);
-
     if($query_proyectos->have_posts()):
       $projects = $query_proyectos->posts;
       wp_reset_postdata();
       // Cuántos proyectos en esta página
       $count_this_page = count($projects);
     ?>
-      <!-- Galería Irregular -->
-      <div class="galeria-irregular">
-        <?php
-        $index = 0;
-        foreach($projects as $p):
-          $project_id = $p->ID;
+<!-- Galería Irregular -->
+<div class="galeria-irregular">
+<?php
+$idx = 0;
+foreach ( $projects as $p ) :
+	$post_id = $p->ID;
 
-          // Obtener slugs de los servicios (solo para data-service si quisieras filtrar local, pero aquí no hace falta)
-          $terms = wp_get_post_terms($project_id, 'servicio', array('fields' => 'slugs'));
-          $data_services = (!empty($terms)) ? implode(' ', $terms) : '';
+	/* ---------- Imagen responsive ---------- */
+	$img_html = '';
 
-          // Obtener imagen (galería -> destacada -> default)
-          $gallery_ids = get_post_meta($project_id, '_proyecto_galeria', true);
-          $project_img = '';
-          if(!empty($gallery_ids)){
-            $arr = array_map('trim', explode(',', $gallery_ids));
-            if(!empty($arr[0])){
-              $project_img = wp_get_attachment_url($arr[0]);
-            }
-          }
-          if(empty($project_img)){
-            $project_img = get_the_post_thumbnail_url($project_id, 'medium');
-          }
-          if(empty($project_img)){
-            $project_img = site_url('/wp-content/uploads/default-project.jpg');
-          }
+	// ① 1.ª imagen de la galería personalizada
+	$gallery_ids = get_post_meta( $post_id, '_proyecto_galeria', true );
+	if ( $gallery_ids ) {
+		$first_id  = (int) strtok( $gallery_ids, ',' );
+		$img_html  = wp_get_attachment_image(
+			$first_id,
+			'medium_large',          // genera srcset
+			false,
+			[ 'loading' => 'lazy', 'alt' => get_the_title( $post_id ) ]
+		);
+	}
 
-          // Clases para “irregularidad”. Solo si hay ~8 o más en esta página
-          $clase_size = '';
-          if($count_this_page >= 11) {
-            if($index % 7 == 0) $clase_size = ' grid-item-large';
-            elseif($index % 5 == 0) $clase_size = ' grid-item-wide';
-          }
-        ?>
-          <div class="grid-item<?php echo esc_attr($clase_size); ?>" 
-               data-service="<?php echo esc_attr($data_services); ?>">
-            <a href="<?php echo esc_url( get_permalink($project_id) ); ?>">
-              <img 
-                src="<?php echo esc_url($project_img); ?>" 
-                alt="<?php echo esc_attr(get_the_title($project_id)); ?>"
-              >
-              <div class="item-overlay">
-                <h3 class="item-title">
-                  <?php echo esc_html( get_the_title($project_id) ); ?>
-                </h3>
-              </div>
-            </a>
-          </div>
-        <?php
-          $index++;
-        endforeach;
-        ?>
-      </div><!-- .galeria-irregular -->
+	// ② destacada
+	if ( ! $img_html && has_post_thumbnail( $post_id ) ) {
+		$img_html = get_the_post_thumbnail(
+			$post_id,
+			'medium_large',
+			[ 'loading' => 'lazy', 'alt' => get_the_title( $post_id ) ]
+		);
+	}
+
+	// ③ fallback
+	if ( ! $img_html ) {
+		$img_html = '<img src="' . esc_url( site_url( '/wp-content/uploads/default-project.jpg' ) ) . '"
+		                  alt="Proyecto de reforma" loading="lazy">';
+	}
+
+	/* ---------- clases large / wide ---------- */
+	$cls = '';
+	if ( $count_this_page >= 11 ) {
+		if     ( $idx % 7 === 0 ) $cls = ' grid-item-large';
+		elseif ( $idx % 5 === 0 ) $cls = ' grid-item-wide';
+	}
+	?>
+	<div class="grid-item<?php echo esc_attr( $cls ); ?>">
+		<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
+			<?php echo $img_html; ?>
+			<div class="item-overlay">
+				<h3 class="item-title"><?php echo esc_html( get_the_title( $post_id ) ); ?></h3>
+			</div>
+		</a>
+	</div>
+	<?php
+	$idx++;
+endforeach;
+?>
+</div><!-- .galeria-irregular -->
+
 
       <!-- Paginación (links) -->
       <div class="paginacion-proyectos">
