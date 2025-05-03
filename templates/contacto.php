@@ -1,28 +1,18 @@
 <?php
+
 /*
 Template Name: Página de Contacto
 */
+
 get_header();
-
-
-
-$banner_field = get_field('banner_image'); // ACF devuelve array si es tipo imagen
-if ( $banner_field && isset($banner_field['url']) ) {
-  $banner_url = $banner_field['url'];
-} else {
-  // fallback a imagen por defecto
-  $banner_url = site_url('/wp-content/uploads/carpinteria.webp');
-}
 
 ?>
 
 <main class="contact-page">
-   <!-- Banner -->
-<section class="proyecto-banner" style="background-image: url('<?php echo esc_url($banner_url); ?>');">
-  <div class="banner-content">
-    <h1><?php the_title(); ?></h1>
-  </div>
-</section>
+  
+    <!-- Sección Banner -->
+    <?php echo do_shortcode('[page_banner]'); ?>
+
   <div class="wrapper-contenido contact-layout">
 
     <!-- Columna Izquierda: Datos de Contacto -->

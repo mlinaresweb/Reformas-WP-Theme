@@ -2,24 +2,16 @@
 /*
 Template Name: Proyectos por Servicio
 */
-// 1) Obtener la imagen del banner desde ACF
-$banner_field = get_field('banner_image'); // ACF devuelve array si es tipo imagen
-if ( $banner_field && isset($banner_field['url']) ) {
-  $banner_url = $banner_field['url'];
-} else {
-  // fallback a imagen por defecto
-  $banner_url = site_url('/wp-content/uploads/carpinteria.webp');
-}
 
-get_header(); ?>
+get_header(); 
+
+?>
 
 <main class="proyectos-galeria">
-  <!-- Banner -->
-<section class="proyecto-banner" style="background-image: url('<?php echo esc_url($banner_url); ?>');">
-  <div class="banner-content">
-    <h1><?php the_title(); ?></h1>
-  </div>
-</section>
+
+  <!-- Sección Banner -->
+  <?php echo do_shortcode('[page_banner]'); ?>
+
   <div class="wrapper-contenido">
 
     <?php
@@ -39,7 +31,7 @@ get_header(); ?>
 
     <!-- Título dinámico -->
     <header class="proyectos-header">
-  <h1>
+  <h2>
     <?php 
       if ( $term ) {
         echo 'Proyectos de ' . esc_html( $term->name );
@@ -47,7 +39,7 @@ get_header(); ?>
         echo 'Proyectos';
       }
     ?>
-  </h1>
+  </h2>
 
   <?php if ( $term ): ?>
     <div class="proyectos-seo-text">

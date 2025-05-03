@@ -1,26 +1,17 @@
 <?php
+
 /*
 Template Name: Página de Servicios
 */
 get_header();
 
-$banner_field = get_field('banner_image'); // ACF devuelve array si es tipo imagen
-if ( $banner_field && isset($banner_field['url']) ) {
-  $banner_url = $banner_field['url'];
-} else {
-  // fallback a imagen por defecto
-  $banner_url = site_url('/wp-content/uploads/banner-servicios.jpg');
-}
-
 ?>
 
 <main class="servicios-overall">
 
-<section class="proyecto-banner" style="background-image: url('<?php echo esc_url($banner_url); ?>');">
-  <div class="banner-content">
-    <h1><?php the_title(); ?></h1>
-  </div>
-</section>
+  <!-- Sección Banner -->
+  <?php echo do_shortcode('[page_banner]'); ?>
+
   <div class="wrapper-contenido">
 
     

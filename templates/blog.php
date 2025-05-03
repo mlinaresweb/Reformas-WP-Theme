@@ -1,5 +1,5 @@
 <?php
-// home.php — Página principal del blog
+// Página principal del blog
 get_header(); ?>
 
 <main class="blog-grid">

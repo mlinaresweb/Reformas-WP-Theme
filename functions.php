@@ -22,6 +22,8 @@ require_once get_template_directory() . '/inc/components/seo-cta.php';
 // componente Sección de Contacto
 require_once get_template_directory() . '/inc/components/contact-section.php';
 
+// componente Banner de Página
+require_once get_template_directory() . '/inc/components/page‑banner.php';
 
   // Soporte para título dinámico en la cabecera
   add_theme_support('title-tag');
@@ -319,3 +321,36 @@ function reformas_whatsapp_floating_button() {
 	</a>
 	<?php
 }
+
+
+
+/*  Coloca esto en functions.php  (o en un loader)  */
+add_action( 'acf/init', function () {
+
+	if ( ! function_exists( 'acf_add_local_field_group' ) ) return;
+
+	acf_add_local_field_group([
+		'key'                   => 'group_page_banner',
+		'title'                 => 'Banner de página',
+		'location'              => [
+			[
+				[
+					'param'    => 'post_type',
+					'operator' => '==',
+					'value'    => 'page',       // usa “page”; cámbialo si solo
+				],
+			],
+		],
+		'fields' => [
+			[
+				'key'          => 'field_banner_image',
+				'label'        => 'Imagen del banner',
+				'name'         => 'banner_image',
+				'type'         => 'image',
+				'return_format'=> 'array',        // necesitamos url y sizes
+				'preview_size' => 'medium',       // 👍  vista previa en el admin
+				'library'      => 'all',
+			],
+		],
+	]);
+});
