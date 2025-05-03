@@ -2039,3 +2039,37 @@ margin-bottom: 6px;
 }
 
 }
+
+
+
+/* Botón flotante WhatsApp */
+.whatsapp-float{
+	position:fixed;
+	right:22px;
+	bottom:22px;
+	width:50px;
+	height:50px;
+	background:#25d366;
+	border-radius:50%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	box-shadow:0 4px 10px rgba(0,0,0,.25);
+	z-index:99999;
+	transition:transform .25s ease, box-shadow .25s ease;
+}
+.whatsapp-float:hover{
+	transform:scale(1.08);
+	box-shadow:0 6px 14px rgba(0,0,0,.35);
+}
+.whatsapp-float svg{
+	pointer-events:none;      /* evita problemas de clic */
+}
+@media (max-width:480px){
+	.whatsapp-float{
+		right:16px;
+		bottom:16px;
+		width:50px;
+		height:50px;
+	}
+}
