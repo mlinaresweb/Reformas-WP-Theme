@@ -67,7 +67,6 @@
     <nav class="main-navigation mobile-menu menu-level-0">
       <ul class="nav-menu">
         <?php
-        // Renderizamos solo primer nivel del menú
         wp_nav_menu([
           'theme_location'=>'menu_principal',
           'container'     => false,
@@ -78,25 +77,28 @@
       </ul>
     </nav>
 
-    <!-- Nivel 1: Submenu Servicios -->
-    <nav class="main-navigation mobile-menu menu-level-1 servicios-submenu" style="display:none">
-      <div class="mobile-submenu-header">      
-        <span class="mobile-submenu-title">Servicios</span>
-      </div>
-      <ul class="nav-menu">
-        <?php foreach( $terms as $t ):
-          $is_active = ( $current_term && $current_term->slug === $t->slug ) ? 'current-menu-item' : '';
-          $url = site_url('/proyectos-'. str_replace('reformas-','',$t->slug) .'/');
-        ?>
-          <li class="<?php echo esc_attr( $is_active ); ?>">
-            <a href="<?php echo esc_url($url); ?>">
-              <?php echo esc_html( $t->name ); ?>
-            </a>
-          </li>
-        <?php endforeach; ?>
-      </ul>
-      <button class="submenu-back">&larr; Volver</button>
-    </nav>
+<!-- Nivel 1 : Sub‑menú SERVICIOS -->
+<nav class="main-navigation mobile-menu menu-level-1 servicios-submenu" style="display:none">
+  <div class="mobile-submenu-header">
+    <span class="mobile-submenu-title">Servicios</span>
+  </div>
+  <ul class="nav-menu">
+    <?php foreach( $terms as $t ):
+        $is_active = ( $current_term && $current_term->slug === $t->slug )
+                     ? 'current-menu-item' : '';
+
+        $url = get_term_link( $t );         
+    ?>
+      <li class="<?php echo esc_attr( $is_active ); ?>">
+        <a href="<?php echo esc_url( $url ); ?>">
+          <?php echo esc_html( $t->name ); ?>
+        </a>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+  <button class="submenu-back">&larr; Volver</button>
+</nav>
+
 
     <!-- Nivel 1: Submenu Proyectos -->
     <nav class="main-navigation mobile-menu menu-level-1 proyectos-submenu" style="display:none">
@@ -105,7 +107,6 @@
       </div>
       <ul class="nav-menu">
         <?php
-        // Construimos slug esperado de taxonomía
         $expected_slug = 'reformas-' . str_replace('proyectos-','',$page_slug);
         foreach( $terms as $t ):
           $is_active = ( 
