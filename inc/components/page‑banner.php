@@ -39,7 +39,7 @@ function reformas_render_page_banner( $atts = [] ) {
 
 	/* ─ Salida ─ */
 	ob_start(); ?>
-	<section class="proyecto-banner"
+	<section class="banner"
 	         role="img"
 	         aria-label="<?php echo esc_attr( $alt ); ?>"
 	         style="background-image:url('<?php echo esc_url( $src ); ?>')">

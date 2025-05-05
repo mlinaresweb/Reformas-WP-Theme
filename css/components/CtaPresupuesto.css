@@ -1,0 +1,41 @@
+/* Componente: CTA Presupuesto */
+.cta-presupuesto {
+    background-color: #f7f7f7;
+    padding: 40px 0;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .cta-presupuesto .wrapper-contenido {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .cta-presupuesto .cta-text {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  .btn-cta-presupuesto {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #A0522D;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+  }
+  .btn-cta-presupuesto:hover {
+    background-color: #7A3E12;
+  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    .cta-presupuesto .cta-text {
+      font-size: 1.1rem;
+    }
+    .btn-cta-presupuesto {
+      font-size: 1rem;
+      padding: 10px 20px;
+    }
+  }

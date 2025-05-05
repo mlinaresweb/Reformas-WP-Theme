@@ -60,7 +60,7 @@ function reformas_add_editor_styles() {
 
   function mi_tema_scripts() {
 
-  // style.css principal del tema
+  // style.css
   wp_enqueue_style('reformas-theme-style', 
   get_stylesheet_uri(), 
   array(), 
@@ -72,10 +72,127 @@ function reformas_add_editor_styles() {
  wp_enqueue_style(
   'reformas-theme-style-nav',
   get_stylesheet_directory_uri() . './css/NavMenu.css',
-  array('reformas-theme-style'), // esto indica que se cargue después de style.css
+  array('reformas-theme-style'),
   '1.0',
   'all'
 );
+
+ // Home
+ wp_enqueue_style(
+  'reformas-theme-style-home',
+  get_stylesheet_directory_uri() . './css/templates/Home.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // ContactSection
+ wp_enqueue_style(
+  'reformas-theme-style-contactsection',
+  get_stylesheet_directory_uri() . './css/components/ContactSection.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // SeoCTA
+ wp_enqueue_style(
+  'reformas-theme-style-seocta',
+  get_stylesheet_directory_uri() . './css/components/SeoCta.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Servicios
+ wp_enqueue_style(
+  'reformas-theme-style-servicios',
+  get_stylesheet_directory_uri() . './css/templates/Servicios.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Banner
+ wp_enqueue_style(
+  'reformas-theme-style-banner',
+  get_stylesheet_directory_uri() . './css/components/pageBanner.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Servicio Individual
+ wp_enqueue_style(
+  'reformas-theme-style-servicioindividual',
+  get_stylesheet_directory_uri() . './css/templates/ServicioIndividual.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Projectos Servicio
+ wp_enqueue_style(
+  'reformas-theme-style-proyectosservicio',
+  get_stylesheet_directory_uri() . './css/components/ProyectosServicio.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Cta Presupuesto
+ wp_enqueue_style(
+  'reformas-theme-style-ctapresupuesto',
+  get_stylesheet_directory_uri() . './css/components/CtaPresupuesto.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+ );
+
+  // Proyectos
+ wp_enqueue_style(
+  'reformas-theme-style-proyectos',
+  get_stylesheet_directory_uri() . './css/templates/Proyectos.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Contacto
+ wp_enqueue_style(
+  'reformas-theme-style-contacto',
+  get_stylesheet_directory_uri() . './css/templates/Contacto.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Blog
+ wp_enqueue_style(
+  'reformas-theme-style-blog',
+  get_stylesheet_directory_uri() . './css/templates/Blog.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Proyecto Individual   
+ wp_enqueue_style(
+  'reformas-theme-style-proyectoindividual',
+  get_stylesheet_directory_uri() . './css/templates/ProyectoIndividual.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all'
+);
+
+ // Footer
+ wp_enqueue_style(
+  'reformas-theme-style-footer',
+  get_stylesheet_directory_uri() . './css/Footer.css',
+  array('reformas-theme-style'), 
+  '1.0',
+  'all');
+
     wp_enqueue_script('mi-tema-scroll', get_stylesheet_directory_uri() . './js/scroll.js', array(), '1.0', true);
   }
   add_action('wp_enqueue_scripts', 'mi_tema_scripts');

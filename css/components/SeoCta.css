@@ -1,0 +1,19 @@
+
+/* Sección SEO */
+.seo-text-section {
+    background-color: #f7f7f7; 
+    padding: 40px 0;
+    text-align: center;
+  }
+  .seo-text-section .wrapper-contenido {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .seo-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  

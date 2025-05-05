@@ -1,0 +1,93 @@
+/* Sección de Contacto */
+.seccion-contacto {
+    padding: 60px 0;
+    background-color: #fff;
+  }
+  .contact-layout {
+    display: flex;
+    gap: 40px;
+    align-items: stretch;  
+  }
+  /* Columna de Imagen */
+  .contact-image {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+  }
+  /* Columna de Formulario */
+  .contact-form {
+    flex: 1;
+    background-color: #faf7f2;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .contact-form h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    color: #3E2723;
+    text-align: center;
+  }
+  /* formulario personalizado */
+  .custom-contact-form {
+    width: 100%;
+  }
+  .custom-contact-form p {
+    margin-bottom: 15px;
+  }
+  .custom-contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #3E2723;
+  }
+  .custom-contact-form input[type="text"],
+  .custom-contact-form input[type="email"],
+  .custom-contact-form input[type="date"],
+  .custom-contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  .btn-contact-form {
+    background-color: #A0522D;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    font-size: 1.1rem;
+  }
+  .btn-contact-form:hover {
+    background-color: #7A3E12;
+  }
+  .contact-success {
+    background: #d4edda;
+    color: #155724;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 768px) {
+    .contact-layout {
+      flex-direction: column;
+    }
+    .contact-image,
+    .contact-form {
+      flex: 1 1 100%;
+    }
+    .contact-image {
+      height: 250px; 
+      flex: auto !important;
+    }
+  }
