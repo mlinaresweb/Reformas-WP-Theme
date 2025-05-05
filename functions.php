@@ -1,421 +1,258 @@
 <?php
-function reformas_theme_setup() {
-
-//cpt proyectos
-require_once get_template_directory() . '/inc/cpt/cpt-proyectos.php';
-
-// taxonomia servicios
-require_once get_template_directory() . '/inc/taxonomia/tax-servicios.php';
-
-// componente formulario
-require_once get_template_directory() . '/inc/forms/contact-form.php';
-
-// componente proyectos del servicio
-require_once get_template_directory() . '/inc/components/service-projects.php';
-
-// componente CTA Presupuesto
-require_once get_template_directory() . '/inc/components/cta-presupuesto.php';
-
-// componente SEO + CTA
-require_once get_template_directory() . '/inc/components/seo-cta.php';
-
-// componente Sección de Contacto
-require_once get_template_directory() . '/inc/components/contact-section.php';
-
-// componente Banner de Página
-require_once get_template_directory() . '/inc/components/page‑banner.php';
-
-  // Soporte para título dinámico en la cabecera
-  add_theme_support('title-tag');
-
-  // Soporte para imágenes destacadas
-  add_theme_support('post-thumbnails');
-
-  // Soporte de estilos de bloques (Gutenberg)
-  add_theme_support('wp-block-styles');
-
-  // Soporte de logo
-  add_theme_support('custom-logo');
-
-  // Permitir alineación ancha y completa en bloques
-  add_theme_support('align-wide');
-
-  // Registrar un menú principal
-  register_nav_menus(array(
-    'menu_principal' => __('Menú Principal', 'reformas-theme'),
-    'footer_menu'    => __('Menú Footer', 'mi-tema'),
-  ));
-}
-add_action('after_setup_theme', 'reformas_theme_setup');
-
-/**
- * Encolar (cargar) nuestros estilos y scripts
- */
-
-function reformas_add_editor_styles() {
-    add_editor_style('editor-style.css');
-  }
-  add_action('admin_init', 'reformas_add_editor_styles');
-  
-
-  function mi_tema_scripts() {
-
-  // style.css
-  wp_enqueue_style('reformas-theme-style', 
-  get_stylesheet_uri(), 
-  array(), 
-  '1.0', 
-  'all'
-);
-
- // Nav
- wp_enqueue_style(
-  'reformas-theme-style-nav',
-  get_stylesheet_directory_uri() . './css/NavMenu.css',
-  array('reformas-theme-style'),
-  '1.0',
-  'all'
-);
-
- // Home
- wp_enqueue_style(
-  'reformas-theme-style-home',
-  get_stylesheet_directory_uri() . './css/templates/Home.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // ContactSection
- wp_enqueue_style(
-  'reformas-theme-style-contactsection',
-  get_stylesheet_directory_uri() . './css/components/ContactSection.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // SeoCTA
- wp_enqueue_style(
-  'reformas-theme-style-seocta',
-  get_stylesheet_directory_uri() . './css/components/SeoCta.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Servicios
- wp_enqueue_style(
-  'reformas-theme-style-servicios',
-  get_stylesheet_directory_uri() . './css/templates/Servicios.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Banner
- wp_enqueue_style(
-  'reformas-theme-style-banner',
-  get_stylesheet_directory_uri() . './css/components/pageBanner.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Servicio Individual
- wp_enqueue_style(
-  'reformas-theme-style-servicioindividual',
-  get_stylesheet_directory_uri() . './css/templates/ServicioIndividual.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Projectos Servicio
- wp_enqueue_style(
-  'reformas-theme-style-proyectosservicio',
-  get_stylesheet_directory_uri() . './css/components/ProyectosServicio.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Cta Presupuesto
- wp_enqueue_style(
-  'reformas-theme-style-ctapresupuesto',
-  get_stylesheet_directory_uri() . './css/components/CtaPresupuesto.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
- );
-
-  // Proyectos
- wp_enqueue_style(
-  'reformas-theme-style-proyectos',
-  get_stylesheet_directory_uri() . './css/templates/Proyectos.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Contacto
- wp_enqueue_style(
-  'reformas-theme-style-contacto',
-  get_stylesheet_directory_uri() . './css/templates/Contacto.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Blog
- wp_enqueue_style(
-  'reformas-theme-style-blog',
-  get_stylesheet_directory_uri() . './css/templates/Blog.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Proyecto Individual   
- wp_enqueue_style(
-  'reformas-theme-style-proyectoindividual',
-  get_stylesheet_directory_uri() . './css/templates/ProyectoIndividual.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all'
-);
-
- // Footer
- wp_enqueue_style(
-  'reformas-theme-style-footer',
-  get_stylesheet_directory_uri() . './css/Footer.css',
-  array('reformas-theme-style'), 
-  '1.0',
-  'all');
-
-    wp_enqueue_script('mi-tema-scroll', get_stylesheet_directory_uri() . './js/scroll.js', array(), '1.0', true);
-  }
-  add_action('wp_enqueue_scripts', 'mi_tema_scripts');
-  
-  function mytheme_enqueue_fonts() {
-    // 1. Registrar la hoja de estilo de Google Fonts
-    wp_register_style(
-        'mytheme-roboto',
-        'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap',
-        [],          // sin dependencias
-        null         // deja que WP gestione la versión con la URL
-    );
-
-    // 2. Encolarla (enqueue)
-    wp_enqueue_style('mytheme-roboto');
-}
-add_action('wp_enqueue_scripts', 'mytheme_enqueue_fonts');
+/* ================================================================
+ *  Reformas Theme –  functions.php
+ *  ---------------------------------------------------------------
+ *  00 · Constantes y cargadores
+ *  01 · Setup del tema
+ *  02 · Estilos  /  Scripts  /  Fuentes
+ *  03 · Mejoras de rendimiento          (resource‑hints)
+ *  04 · Menú – inyección submenú y clases “active”
+ *  05 · Scripts de administración       (term image picker)
+ *  06 · Librerías front‑end externas    (baguetteBox)
+ *  07 · Widgets UI (WhatsApp flotante)
+ *  08 · ACF Campos locales
+ *  09 · Tamaños de imagen adicionales
+ * ===============================================================*/
 
 
-/**
- * Añade resource hints (<link rel="preconnect">) para mejorar el rendimiento.
- */
-function mytheme_resource_hints( $urls, $relation_type ) {
-    if ( 'preconnect' === $relation_type ) {
-        $urls[] = 'https://fonts.googleapis.com';
-        // with crossorigin attribute
-        $urls[] = [
-            'href'        => 'https://fonts.gstatic.com',
-            'crossorigin' => true,
-        ];
-    }
-    return $urls;
-}
-add_filter( 'wp_resource_hints', 'mytheme_resource_hints', 10, 2 );
+/* =================================================================
+ * 00 · CONSTANTES + AUTO‑INCLUDES
+ * =================================================================*/
+define( 'REF_DIR', get_template_directory() );
+define( 'REF_URI', get_stylesheet_directory_uri() );
 
-  add_filter('wp_nav_menu_objects', 'add_projects_submenu_items', 10, 2);
-  function add_projects_submenu_items($sorted_menu_items, $args) {
-      // Limita el filtro al menú principal (ajusta 'menu_principal' si es necesario)
-      if ( isset($args->theme_location) && $args->theme_location == 'menu_principal' ) {
-          foreach ($sorted_menu_items as $menu_item) {
-              // Detecta el elemento cuyo título sea "Proyectos"
-              if ( trim($menu_item->title) === 'Proyectos' ) {
-                  // Obtén los términos de la taxonomía "servicio"
-                  $terms = get_terms(array(
-                      'taxonomy'   => 'servicio',
-                      'hide_empty' => false,
-                  ));
-                  if (!is_wp_error($terms) && !empty($terms)) {
-                      // Define un mapeo de slugs de servicio a la URL de la página personalizada
-                      $service_pages = array(
-                          'reformas-albanileria' => site_url('/proyectos-albanileria/'),
-                          'reformas-carpinteria' => site_url('/proyectos-carpinteria/'),
-                          'reformas-fontaneria'  => site_url('/proyectos-fontaneria/'),
-                          'reformas-electricista'=> site_url('/proyectos-electricista/'),
-                          'reformas-pintor'       => site_url('/proyectos-pintor/'),
-                      );
-                      $submenu_items = array();
-                      // Empezamos el orden justo después del padre
-                      $order = $menu_item->menu_order + 0.1;
-                      foreach( $terms as $term ) {
-                          $item = clone $menu_item;
-                          // Define el título: "Proyectos de [Servicio]"
-                          $item->title = 'Proyectos de ' . $term->name;
-                          // Asigna un ID único
-                          $item->ID = 100000 + $term->term_id;
-                          $item->db_id = $item->ID;
-                          // Establece el padre para formar el submenú
-                          $item->menu_item_parent = $menu_item->ID;
-                          // Si en el mapeo existe el slug, usar esa URL; en caso contrario, usar el enlace por defecto del término
-                          $slug = strtolower( $term->slug );
-                          if ( isset($service_pages[$slug]) ) {
-                              $item->url = esc_url( $service_pages[$slug] );
-                          } else {
-                              $item->url = esc_url(get_term_link($term));
-                          }
-                          $item->menu_order = $order;
-                          $order++;
-                          $submenu_items[] = $item;
-                      }
-                      // Inserta los nuevos subítems justo después del ítem "Proyectos"
-                      $index = array_search($menu_item, $sorted_menu_items);
-                      array_splice($sorted_menu_items, $index + 1, 0, $submenu_items);
-                  }
-              }
-          }
-      }
-      return $sorted_menu_items;
-  }
-  
-/**
- * Pinta los enlaces activos del bloque “Proyectos”.
- * – En /proyectos solo se resalta el enlace “Proyectos”.
- * – En /proyectos‑xxx/ se resalta “Proyectos” y el sub‑enlace que
- *   coincide con /proyectos‑xxx/.
- */
-add_filter( 'nav_menu_css_class', 'reformas_set_projects_active', 10, 4 );
-function reformas_set_projects_active( $classes, $item, $args, $depth ) {
-
-    /* Solo queremos afectar al menú principal ---------------------------- */
-    if ( empty( $args->theme_location ) || $args->theme_location !== 'menu_principal' ) {
-        return $classes;
-    }
-
-    /* Ruta actual sin dominio ni barra final ---------------------------- */
-    global $wp;
-    $current_path = '/' . untrailingslashit( $wp->request );     // ej:  /proyectos
-    $item_path    = untrailingslashit( parse_url( $item->url, PHP_URL_PATH ) ); // ej: /proyectos-albanileria
-
-    /* 1. Página global de proyectos (/proyectos) ------------------------ */
-    if ( $current_path === '/proyectos' ) {
-
-        // Si es el enlace padre “Proyectos” => lo marcamos
-        if ( trim( $item->title ) === 'Proyectos' || $item_path === '/proyectos' ) {
-            $classes[] = 'current-menu-item';
-        }
-        // En cualquier otro caso aseguramos que NO quede marcado
-        else {
-            $classes = array_diff( $classes, [ 'current-menu-item', 'current_page_item',
-                                               'current-menu-parent', 'current-menu-ancestor' ] );
-        }
-        return $classes;
-    }
-
-    /* 2. Páginas /proyectos-xxx/  -------------------------------------- */
-    if ( preg_match( '#^/proyectos-([^/]+)$#', $current_path, $m ) ) {
-
-        $service_slug = $m[1];                     // ej: albanileria
-        $expected     = '/proyectos-' . $service_slug;
-
-        // Padre “Proyectos”
-        if ( trim( $item->title ) === 'Proyectos' || $item_path === '/proyectos' ) {
-            $classes[] = 'current-menu-item';
-        }
-
-        // Sub‑enlace exacto
-        if ( $item_path === $expected ) {
-            $classes[] = 'current-menu-item';
-        }
-        return $classes;
-    }
-
-    /* 3. Cualquier otra URL – no tocamos nada --------------------------- */
-    return $classes;
+/* -- Carga de módulos (CPT, tax, componentes, etc.) -------------- */
+foreach ( [
+	'/inc/cpt/cpt-proyectos.php',
+	'/inc/taxonomia/tax-servicios.php',
+	'/inc/forms/contact-form.php',
+	'/inc/components/service-projects.php',
+	'/inc/components/cta-presupuesto.php',
+	'/inc/components/seo-cta.php',
+	'/inc/components/contact-section.php',
+	'/inc/components/page‑banner.php',
+] as $inc ) {
+	require_once REF_DIR . $inc;
 }
 
-  
-  function servicio_admin_enqueue_scripts($hook) {
-    // Cargar solo en las páginas de edición de términos
-    if ( $hook === 'term.php' || $hook === 'edit-tags.php' ) {
-        wp_enqueue_media();
-        wp_enqueue_script( 'servicio-admin-js', get_template_directory_uri() . '/js/servicio-admin.js', array('jquery'), '1.0', true );
-    }
+
+/* =================================================================
+ * 01 · SETUP DEL TEMA
+ * =================================================================*/
+add_action( 'after_setup_theme', function () {
+
+  add_theme_support( 'title-tag' );
+  add_theme_support( 'post-thumbnails' );
+  add_theme_support( 'wp-block-styles' );
+  add_theme_support( 'custom-logo' );
+  add_theme_support( 'align-wide' );
+
+	register_nav_menus( [
+		'menu_principal' => __( 'Menú Principal', 'reformas-theme' ),
+		'footer_menu'    => __( 'Menú Footer',    'reformas-theme' ),
+	] );
+} );
+
+
+/* =================================================================
+ * 02 · ASSETS  (CSS / JS / FUENTES)
+ * =================================================================*/
+
+/** 2‑a · CSS + JS del front */
+add_action( 'wp_enqueue_scripts', function () {
+
+	/* —— hoja base (imprescindible para dependencias) */
+	wp_enqueue_style( 'ref-base', get_stylesheet_uri(), [], '1.0' );
+
+	/* —— colecciones de estilos */
+	$styles = [
+		'NavMenu', 
+    'templates/Home', 
+    'components/ContactSection',
+		'components/SeoCta', 
+    'templates/Servicios', 
+    'components/pageBanner',
+		'templates/ServicioIndividual', 
+    'components/ProyectosServicio',
+		'components/CtaPresupuesto', 
+    'templates/Proyectos',
+		'templates/Contacto', 
+    'templates/Blog',
+		'templates/ProyectoIndividual', 
+    'Footer',
+	];
+	foreach ( $styles as $file ) {
+		wp_enqueue_style(
+			"ref-$file",
+			REF_URI . "/css/$file.css",
+			[ 'ref-base' ],
+			'1.0'
+		);
+	}
+
+	/* —— JS propio */
+	wp_enqueue_script(
+		'ref-scroll',
+		REF_URI . '/js/scroll.js',
+		[],
+		'1.0',
+		true
+	);
+} );
+
+/** 2‑b · Estilos para el editor */
+add_action( 'admin_init', function () {
+	add_editor_style( 'editor-style.css' );
+} );
+
+/** 2‑c · Google Fonts */
+add_action( 'wp_enqueue_scripts', function () {
+	wp_register_style(
+		'ref-roboto',
+		'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap',
+		[],
+		null
+	);
+	wp_enqueue_style( 'ref-roboto' );
+}, 5);
+
+
+/* =================================================================
+ * 03 · RESOURCE HINTS
+ * =================================================================*/
+add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
+	if ( 'preconnect' === $relation ) {
+		$urls[] = 'https://fonts.googleapis.com';
+		$urls[] = [ 'href' => 'https://fonts.gstatic.com', 'crossorigin' => true ];
+	}
+	return $urls;
+}, 10, 2 );
+
+
+/* =================================================================
+ * 04 · MENÚ  (sub‑menú dinámico + clases active)
+ * =================================================================*/
+
+/* 4‑a · Inyectar sub‑links “Proyectos de [servicio]” ------------- */
+add_filter( 'wp_nav_menu_objects', 'ref_add_project_children', 10, 2 );
+function ref_add_project_children( $items, $args ) {
+
+	if ( empty( $args->theme_location ) || $args->theme_location !== 'menu_principal' ) {
+		return $items;
+	}
+
+	foreach ( $items as $item ) {
+		if ( 'Proyectos' !== trim( $item->title ) ) continue;
+
+		$terms = get_terms( [ 'taxonomy' => 'servicio', 'hide_empty' => false ] );
+		if ( is_wp_error( $terms ) ) return $items;
+
+		$service_pages = [
+			'reformas-albanileria'  => site_url( '/proyectos-albanileria/'  ),
+			'reformas-carpinteria'  => site_url( '/proyectos-carpinteria/'  ),
+			'reformas-fontaneria'   => site_url( '/proyectos-fontaneria/'   ),
+			'reformas-electricista' => site_url( '/proyectos-electricista/' ),
+			'reformas-pintor'       => site_url( '/proyectos-pintor/'       ),
+		];
+
+		$order = $item->menu_order + 0.1;
+		foreach ( $terms as $t ) {
+			$clone                   = clone $item;
+			$clone->ID               = 100000 + $t->term_id;
+			$clone->db_id            = $clone->ID;
+			$clone->menu_item_parent = $item->ID;
+			$clone->menu_order       = $order;
+			$clone->title            = 'Proyectos de ' . $t->name;
+			$clone->url              = $service_pages[ $t->slug ] ?? get_term_link( $t );
+			$items[]                 = $clone;
+			$order += 0.1;
+		}
+		break;
+	}
+	return $items;
 }
-add_action( 'admin_enqueue_scripts', 'servicio_admin_enqueue_scripts' );
+
+/* 4‑b · Señalar enlaces activos correctamente ------------------- */
+add_filter( 'nav_menu_css_class', 'ref_projects_current_classes', 10, 4 );
+function ref_projects_current_classes( $classes, $item, $args ) {
+
+	if ( empty( $args->theme_location ) || $args->theme_location !== 'menu_principal' ) {
+		return $classes;
+	}
+
+	global $wp;
+	$current = '/' . untrailingslashit( $wp->request );
+	$itemURI = untrailingslashit( parse_url( $item->url, PHP_URL_PATH ) );
+
+	/* — página /proyectos */
+	if ( '/proyectos' === $current ) {
+		if ( 'Proyectos' === trim( $item->title ) || '/proyectos' === $itemURI ) {
+			$classes[] = 'current-menu-item';
+		} else {
+			$classes = array_diff( $classes, [ 'current-menu-item', 'current-menu-parent', 'current-menu-ancestor' ] );
+		}
+		return $classes;
+	}
+
+	/* — páginas /proyectos‑xxx/ */
+	if ( preg_match( '#^/proyectos-([^/]+)$#', $current, $m ) ) {
+		$expected = '/proyectos-' . $m[1];
+		if ( 'Proyectos' === trim( $item->title ) || '/proyectos' === $itemURI || $itemURI === $expected ) {
+			$classes[] = 'current-menu-item';
+		}
+	}
+
+	return $classes;
+}
 
 
-// Manejar el envío del formulario de contacto de la página Contacto
-function handle_contact_page_form() {
-    if ( ! isset($_POST['contact_page_nonce']) || ! wp_verify_nonce($_POST['contact_page_nonce'], 'contact_page_form') ) {
-      wp_die('Error de seguridad, inténtalo de nuevo.');
-    }
-    $name    = sanitize_text_field( $_POST['contact_name'] );
-    $email   = sanitize_email( $_POST['contact_email'] );
-    $phone   = sanitize_text_field( $_POST['contact_phone'] );
-    $message = sanitize_textarea_field( $_POST['contact_message'] );
-  
-    $to = 'info@tudominio.com'; // tu email
-    $subject = 'Mensaje de contacto: ' . $name;
-    $headers = [
-      'Content-Type: text/html; charset=UTF-8',
-      'Reply-To: ' . $name . ' <' . $email . '>',
-    ];
-    $body  = "<p><strong>Nombre:</strong> {$name}</p>";
-    $body .= "<p><strong>Email:</strong> {$email}</p>";
-    if ( $phone ) {
-      $body .= "<p><strong>Teléfono:</strong> {$phone}</p>";
-    }
-    $body .= "<p><strong>Mensaje:</strong><br>" . nl2br($message) . "</p>";
-  
-    wp_mail( $to, $subject, $body, $headers );
-  
-    // Redirigir con flag de éxito
-    $redirect = add_query_arg( 'contacto', 'ok', wp_get_referer() );
-    wp_redirect( $redirect );
-    exit;
-  }
-  add_action( 'admin_post_nopriv_handle_contact_page_form', 'handle_contact_page_form' );
-  add_action( 'admin_post_handle_contact_page_form',        'handle_contact_page_form' );
-  
+/* =================================================================
+ * 05 · SCRIPTS BACK‑OFFICE
+ * =================================================================*/
+add_action( 'admin_enqueue_scripts', function ( $hook ) {
+	if ( in_array( $hook, [ 'term.php', 'edit-tags.php' ], true ) ) {
+		wp_enqueue_media();
+		wp_enqueue_script(
+			'ref-servicio-admin',
+			REF_URI . '/js/servicio-admin.js',
+			[ 'jquery' ],
+			'1.0',
+			true
+		);
+	}
+} );
 
-  function reformas_enqueue_lightbox() {
-    // CSS de baguetteBox
-    wp_enqueue_style(
-      'baguettebox-css',
-      'https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.css',
-      array(),
-      '1.11.1'
-    );
-    // JS de baguetteBox
-    wp_enqueue_script(
-      'baguettebox-js',
-      'https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.js',
-      array(),
-      '1.11.1',
-      true
-    );
-    // Inicialización al cargar
-    wp_add_inline_script(
-      'baguettebox-js',
-      "document.addEventListener('DOMContentLoaded', function() {
-         baguetteBox.run('.baguette-gallery', {
-           captions: true,
-           buttons: 'auto',
-         });
-       });"
-    );
-  }
-  add_action('wp_enqueue_scripts', 'reformas_enqueue_lightbox');
-  
-  
-  /* -------------------------------------------------
- * Botón flotante de WhatsApp (footer)
- * -------------------------------------------------*/
+
+/* =================================================================
+ * 06 · BAGUETTEBOX (galerías)
+ * =================================================================*/
+add_action( 'wp_enqueue_scripts', function () {
+
+	wp_enqueue_style(
+		'baguettebox',
+		'https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.css',
+		[],
+		'1.11.1'
+	);
+
+	wp_enqueue_script(
+		'baguettebox',
+		'https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.js',
+		[],
+		'1.11.1',
+		true
+	);
+
+	wp_add_inline_script(
+		'baguettebox',
+		"document.addEventListener('DOMContentLoaded',()=>baguetteBox.run('.baguette-gallery',{captions:true,buttons:'auto'}));"
+	);
+} );
+
+
+/* =================================================================
+ * 07 · BOTÓN FLOTANTE DE WHATSAPP
+ * =================================================================*/
 add_action( 'wp_footer', 'reformas_whatsapp_floating_button' );
 function reformas_whatsapp_floating_button() {
 
@@ -440,39 +277,38 @@ function reformas_whatsapp_floating_button() {
 }
 
 
-
-/*  Coloca esto en functions.php  (o en un loader)  */
+/* =================================================================
+ * 08 · CAMPOS ACF (Banner por página)
+ * =================================================================*/
 add_action( 'acf/init', function () {
 
 	if ( ! function_exists( 'acf_add_local_field_group' ) ) return;
 
-	acf_add_local_field_group([
-		'key'                   => 'group_page_banner',
-		'title'                 => 'Banner de página',
-		'location'              => [
-			[
-				[
-					'param'    => 'post_type',
-					'operator' => '==',
-					'value'    => 'page',       // usa “page”; cámbialo si solo
-				],
-			],
-		],
+	acf_add_local_field_group( [
+		'key'    => 'group_page_banner',
+		'title'  => 'Banner de página',
 		'fields' => [
 			[
 				'key'          => 'field_banner_image',
 				'label'        => 'Imagen del banner',
 				'name'         => 'banner_image',
 				'type'         => 'image',
-				'return_format'=> 'array',        // necesitamos url y sizes
-				'preview_size' => 'medium',       // 👍  vista previa en el admin
+				'return_format'=> 'array',
+				'preview_size' => 'medium',
 				'library'      => 'all',
 			],
 		],
-	]);
-});
-
-// Tamaño fijo 640×360 px, recorte duro (true)
-add_action( 'after_setup_theme', function () {
-	add_image_size( 'servicio-card', 640, 360, true );
+		'location' => [
+			[ [ 'param' => 'post_type', 'operator' => '==', 'value' => 'page' ] ],
+		],
+	] );
 } );
+
+
+/* =================================================================
+ * 09 · TAMAÑOS DE IMAGEN EXTRA
+ * =================================================================*/
+add_action( 'after_setup_theme', function () {
+	add_image_size( 'servicio-card', 640, 360, true ); // 16 : 9 hard‑crop
+} );
+
