@@ -83,6 +83,9 @@ body {
   h1, h2, h3, h4, h5, h6{
     color: #3E2723;
   }
+  .sr-only{
+    display: none;
+  }
   .span-marron{
     color: #A0522D;
     font-weight: 700;
@@ -157,7 +160,7 @@ body {
   border-radius: 12px;
   height: auto;
 }
-.hero-content h1{
+.hero-content h2{
   font-size: 36px;
   text-transform: uppercase;
   margin-bottom: 2px;
@@ -210,13 +213,13 @@ body {
   padding: 60px 0;
   background-color: #faf7f2;
   text-align: center;
-  padding-top: 1px;
+  padding-top: 42px;
 }
 
 .porque-elegirnos .section-title {
   font-size: 2.5rem;
   margin-bottom: 50px;
-  color: #3E2723; /* Marrón oscuro para transmitir finura */
+  color: #3E2723; 
   font-weight: 700;
 }
 
