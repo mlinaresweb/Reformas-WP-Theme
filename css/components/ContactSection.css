@@ -41,7 +41,8 @@
     margin-bottom: 15px;
   }
   .custom-contact-form label {
-    display: block;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 5px;
     font-weight: 600;
     color: #3E2723;

@@ -37,7 +37,8 @@ function reformas_render_contact_form() {
            pattern="[0-9]{9}"   
            minlength="9"
            maxlength="9"
-         >
+		   style="height: 40px; border: 1px solid #dddddd";
+>
   </label>
   <span class="error-msg" aria-live="polite"></span>
 </p>
