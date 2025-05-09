@@ -78,6 +78,12 @@
     text-align: center;
     margin-bottom: 20px;
   }
+  .error-msg{
+    color: red;
+  }
+  .contact-hidden{
+    display: none;
+  }
   @media (max-width: 768px) {
     .contact-layout {
       flex-direction: column;

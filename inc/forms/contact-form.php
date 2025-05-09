@@ -11,28 +11,51 @@ function reformas_render_contact_form() {
 	ob_start(); ?>
 
 <div id="contact-form-wrap">
-	<form method="post"
+	<form id="contact-form" class="custom-contact-form" novalidate
 	      action="<?php echo esc_url( admin_url('admin-post.php') ); ?>"
-	      class="custom-contact-form">
+	      method="post">
 
 		<?php wp_nonce_field( 'contact_form_action', 'contact_form_nonce' ); ?>
-		<input type="hidden" name="action"  value="reformas_handle_contact">
-		<input type="text"    name="website" style="display:none"><!-- honeypot -->
+		<input type="hidden" name="action" value="reformas_handle_contact">
+		<input type="text" name="website" class="hp-field contact-hidden" tabindex="-1">
 
 		<p><label>Nombre
-			<input type="text" name="contact_name" required maxlength="80"></label></p>
+			<input type="text" name="contact_name" required minlength="2"
+			       maxlength="80" pattern="[A-Za-zÀ-ÿ '\-]+"></label>
+			<span class="error-msg" aria-live="polite"></span>
+		</p>
 
 		<p><label>Email
-			<input type="email" name="contact_email" required maxlength="80"></label></p>
+			<input type="email" name="contact_email" required maxlength="80"></label>
+			<span class="error-msg" aria-live="polite"></span>
+		</p>
 
-		<p><label>Teléfono
-			<input type="tel" name="contact_phone" maxlength="30"></label></p>
+		<p>
+  <label>Teléfono
+  <input type="tel"
+           name="contact_phone"
+           pattern="[0-9]{9}"   
+           minlength="9"
+           maxlength="9"
+         >
+  </label>
+  <span class="error-msg" aria-live="polite"></span>
+</p>
 
 		<p><label>Asunto
-			<input type="text" name="contact_subject" required maxlength="120"></label></p>
+			<input type="text" name="contact_subject" required
+			       minlength="3" maxlength="120"></label>
+			<span class="error-msg" aria-live="polite"></span>
+		</p>
 
 		<p><label>Mensaje
-			<textarea name="contact_message" rows="5" required maxlength="1200"></textarea></label></p>
+			<textarea name="contact_message" rows="5" required
+			          minlength="10" maxlength="1200"></textarea></label>
+			<span class="error-msg" aria-live="polite"></span>
+		</p>
+
+		<!-- reCAPTCHA v3  -->
+		<!-- <input type="hidden" name="recaptcha_token" id="recaptchaToken"> -->
 
 		<p><button type="submit" class="btn-contact-form">Enviar</button></p>
 		<?php
@@ -60,31 +83,57 @@ function reformas_handle_contact_form() {
 		wp_die( 'Petición no válida.' );
 	}
 
-	/* 2 Datos limpios */
-	$name    = sanitize_text_field( $_POST['contact_name']    ?? '' );
-	$email   = sanitize_email     ( $_POST['contact_email']   ?? '' );
-	$phone   = sanitize_text_field( $_POST['contact_phone']   ?? '' );
-	$subject = sanitize_text_field( $_POST['contact_subject'] ?? '' );
-	$message = sanitize_textarea_field( $_POST['contact_message'] ?? '' );
+		/* ─── Rate-limit: 1 cada 90 s por IP ─────────── */
+		$ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+		if ( false !== get_transient("contact_lock_$ip") ) {
+			wp_die( 'Espera unos segundos antes de volver a enviar.' );
+		}
+		set_transient("contact_lock_$ip", '1', 90);
+	
+		/* ─── Datos limpios y VALIDADOS ──────────────── */
+		$name  = trim( wp_unslash( $_POST['contact_name'] ?? '' ) );
+		$email = trim( wp_unslash( $_POST['contact_email'] ?? '' ) );
+		$phone = trim( wp_unslash( $_POST['contact_phone'] ?? '' ) );
+		$subj  = trim( wp_unslash( $_POST['contact_subject'] ?? '' ) );
+		$msg   = trim( wp_unslash( $_POST['contact_message'] ?? '' ) );
+	
+		$errors = [];
+		if ( ! preg_match('/^[A-Za-zÀ-ÿ \'\-]{2,80}$/', $name) )   $errors[] = 'Nombre';
+		if ( ! is_email( $email ) )                               $errors[] = 'Email';
+		if ( $phone && ! preg_match('/^[0-9+\s().-]{6,30}$/', $phone) ) $errors[] = 'Teléfono';
+		if ( strlen($subj) < 3 )                                  $errors[] = 'Asunto';
+		if ( strlen($msg)  < 10 )                                 $errors[] = 'Mensaje';
+	
+		/* reCAPTCHA (opcional)
+		$token = $_POST['recaptcha_token'] ?? '';
+		if ( $token && ! mytheme_verify_recaptcha($token) ) {
+			$errors[] = 'reCAPTCHA';
+		}
+		*/
+	
+		if ( $errors ) {
+			wp_die( 'Error en: '.implode(', ', $errors) );
+		}
 
 	/* 3 E-mail */
-	$to      = 'm.s.rapbarcelona@gmail.com';       // ← tu email
+	$ContactMail  = defined('CONTACT_TO_EMAIL')    ? CONTACT_TO_EMAIL    : '';
+	$to      = $ContactMail;       
 	$headers = [
 		'Content-Type: text/html; charset=UTF-8',
 		'Reply-To: '.$name.' <'.$email.'>',
 	];
 	$body = "
-		<strong>Nombre:</strong> {$name}<br>
-		<strong>Email:</strong> {$email}<br>
-		<strong>Teléfono:</strong> {$phone}<br>
-		<strong>Mensaje:</strong><br>".nl2br($message);
+			 <strong>Nombre:</strong> ".esc_html($name)."<br>
+	         <strong>Email:</strong> ".esc_html($email)."<br>
+	         <strong>Teléfono:</strong> ".esc_html($phone)."<br>
+	         <strong>Mensaje:</strong><br>".nl2br(esc_html($msg));
 
-	wp_mail( $to, $subject, $body, $headers );
+	wp_mail( $to, $subj, $body, $headers );
 
 	/* 4 Añadir fila en Google Sheets */
 	reformas_append_to_sheet( [
 		current_time( 'Y-m-d H:i' ),
-		$name, $email, $phone, $subject, $message
+		$name, $email, $phone, $subj, $msg
 	] );
 
 /* 5 · Redirect flash + ancla */
@@ -119,16 +168,16 @@ function reformas_append_to_sheet( array $values ){
 	require_once $vendor;
 
 	$client = new Google_Client();
-	$client->setAuthConfig( $credPath );                     // ① JSON de service-account
+	$client->setAuthConfig( $credPath );                   
 	$client->setScopes([
 		Google_Service_Sheets::SPREADSHEETS,
-		Google_Service_Sheets::DRIVE         // ② scopes de escritura
+		Google_Service_Sheets::DRIVE        
 	]);
 
 	$service = new Google_Service_Sheets( $client );
 
-	$spreadsheetId = $sheetId;                               // ③ ID de la hoja de cálculo
-	$range         = $sheetRange;                             // ④ rango de la hoja
+	$spreadsheetId = $sheetId;                             
+	$range         = $sheetRange;                            
 	error_log('[Sheets] ID.....: '.$spreadsheetId);
 	error_log('[Sheets] Range..: '.$range);
 	error_log('[Sheets] Values.: '.wp_json_encode($values));
@@ -152,5 +201,6 @@ function reformas_append_to_sheet( array $values ){
 /*---------------------------------------------------
   Cabeceras “From”
 ----------------------------------------------------*/
+$ContactMail  = defined('CONTACT_TO_EMAIL')    ? CONTACT_TO_EMAIL    : '';
 add_filter( 'wp_mail_from',      fn() => $ContactMail );
 add_filter( 'wp_mail_from_name', fn() => get_bloginfo( 'name' ) );

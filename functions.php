@@ -114,7 +114,16 @@ add_action( 'wp_enqueue_scripts', function () {
 		'1.0',
 		true
 	);
+
 } );
+add_action( 'wp_enqueue_scripts', function () {
+	wp_enqueue_script(
+		'contact-validate',
+		get_template_directory_uri().'/js/contact-form-validate.js',
+		[], '1.0', true
+	);
+}, 11 );   // 11 → después de tus estilos para que no salte el notice
+
 
 /** 2‑b · Estilos para el editor */
 add_action( 'admin_init', function () {
