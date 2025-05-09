@@ -1,0 +1,6 @@
+# --- secrets -------------------------------------------------
+.env                              # all env variables
+wp-content/themes/custom-theme/inc/credentials/*  # service-account JSON
+!wp-content/themes/custom-theme/inc/credentials/.gitkeep  # keep folder
+# --- composer / vendor (optional if you deploy with Composer)-
+# vendor/

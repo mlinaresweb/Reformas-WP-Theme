@@ -14,12 +14,28 @@
  *  09 · Tamaños de imagen adicionales
  * ===============================================================*/
 
-
 /* =================================================================
  * 00 · CONSTANTES + AUTO‑INCLUDES
  * =================================================================*/
+
+ $secret_file = get_template_directory() . '/inc/credentials/local-secrets.php';
+
+if ( file_exists( $secret_file ) ) {
+	$secrets = require $secret_file;        
+
+	foreach ( $secrets as $key => $value ) {
+		if ( ! defined( $key ) ) {
+			define( $key, $value );
+		}
+	}
+}
+
 define( 'REF_DIR', get_template_directory() );
 define( 'REF_URI', get_stylesheet_directory_uri() );
+
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
 
 /* -- Carga de módulos (CPT, tax, componentes, etc.) -------------- */
 foreach ( [
@@ -66,19 +82,19 @@ add_action( 'wp_enqueue_scripts', function () {
 
 	/* —— colecciones de estilos */
 	$styles = [
-		'NavMenu', 
+	'NavMenu', 
     'templates/Home', 
     'components/ContactSection',
-		'components/SeoCta', 
+	'components/SeoCta', 
     'templates/Servicios', 
     'components/pageBanner',
-		'templates/ServicioIndividual', 
+	'templates/ServicioIndividual', 
     'components/ProyectosServicio',
-		'components/CtaPresupuesto', 
+	'components/CtaPresupuesto', 
     'templates/Proyectos',
-		'templates/Contacto', 
+	'templates/Contacto', 
     'templates/Blog',
-		'templates/ProyectoIndividual', 
+	'templates/ProyectoIndividual', 
     'Footer',
 	];
 	foreach ( $styles as $file ) {

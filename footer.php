@@ -82,8 +82,33 @@
   </div>
 </footer>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    /* scroll suave si hay hash — por si otros scripts lo impiden */
+    if (location.hash === '#contact-form-wrap') {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView({behavior:'smooth'});
+    }
+
+    /* ocultar mensaje flash tras 10 s */
+    const msg = document.getElementById('flash-msg');
+    if (msg) setTimeout(() => msg.style.display = 'none', 10000);
+});
+</script>
 
 
 <?php wp_footer(); ?>
 </body>
 </html>
+<?php
+add_action( 'wp_footer', function () {
+	if ( file_exists( WP_CONTENT_DIR . '/debug.log' ) ) {
+		$lines = array_slice( file( WP_CONTENT_DIR . '/debug.log' ), -20 );
+		echo '<script>console.group("WP Debug");';
+		foreach ( $lines as $l ) {
+			echo 'console.log('.json_encode(trim($l)).');';
+		}
+		echo 'console.groupEnd();</script>';
+	}
+} );
+?>
