@@ -12,6 +12,7 @@
  *  07 · Widgets UI (WhatsApp flotante)
  *  08 · ACF Campos locales
  *  09 · Tamaños de imagen adicionales
+ *  10 · Enqueue contact form assets
  * ===============================================================*/
 
 /* =================================================================
@@ -337,3 +338,20 @@ add_action( 'after_setup_theme', function () {
 	add_image_size( 'servicio-card', 640, 360, true ); // 16 : 9 hard‑crop
 } );
 
+/* =================================================================
+ * 10 · ENQUEUE CONTACT FORM ASSETS
+ * =================================================================*/
+
+ function reformas_enqueue_contact_assets() {
+	wp_enqueue_script(
+		'contact-ajax',
+		get_stylesheet_directory_uri() . '/js/contact-ajax.js',
+		['wp-i18n'],   
+		'1.0',
+		true
+	);
+	wp_localize_script( 'contact-ajax', 'reformasAjax', [
+		'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+	] );
+}
+add_action( 'wp_enqueue_scripts', 'reformas_enqueue_contact_assets' );

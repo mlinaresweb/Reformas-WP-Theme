@@ -16,7 +16,7 @@ function reformas_render_contact_form() {
 	      method="post">
 
 		<?php wp_nonce_field( 'contact_form_action', 'contact_form_nonce' ); ?>
-		<input type="hidden" name="action" value="reformas_handle_contact">
+		<input type="hidden" name="action" value="reformas_handle_contact_ajax">
 		<input type="text" name="website" class="hp-field contact-hidden" tabindex="-1">
 
 		<p><label>Nombre
@@ -58,6 +58,24 @@ function reformas_render_contact_form() {
 		<!-- reCAPTCHA v3  -->
 		<!-- <input type="hidden" name="recaptcha_token" id="recaptchaToken"> -->
 
+		<!-- Aceptación de la política de privacidad -->
+<p class="checkbox-privacy">
+  <label style="display: flex; justify-content: flex-start; align-items: flex-start; flex-direction: row;flex-wrap: wrap;">
+    <input type="checkbox"
+           name="privacy_accept"
+           required
+           aria-required="true"
+           value="1" style="width: max-content;margin-right: 10px;">
+    He leído y acepto la 
+     <a href="/politica-privacidad/"
+       target="_blank"
+       rel="noopener noreferrer"
+	   class="enlace-form">
+        Política&nbsp;de&nbsp;Privacidad</a>.
+  </label>
+  <span class="error-msg" aria-live="polite"></span>
+</p>
+
 		<p><button type="submit" class="btn-contact-form">Enviar</button></p>
 		<?php
             /* Aviso justo debajo del botón ------------------------- */
@@ -75,81 +93,79 @@ add_shortcode( 'custom_contact_form', 'reformas_render_contact_form' );
 /*---------------------------------------------------
   HANDLER
 ----------------------------------------------------*/
-function reformas_handle_contact_form() {
+function reformas_handle_contact_ajax() {
 
-	/* 1 Seguridad */
+	/* 1 ▸ Seguridad */
 	if ( empty($_POST['contact_form_nonce']) ||
-	     ! wp_verify_nonce($_POST['contact_form_nonce'], 'contact_form_action') ||
+	     ! wp_verify_nonce($_POST['contact_form_nonce'],'contact_form_action') ||
 	     ! empty($_POST['website']) ) {
-		wp_die( 'Petición no válida.' );
+		wp_send_json_error( ['message'=>'Petición no válida.'], 400 );
 	}
 
-		/* ─── Rate-limit: 1 cada 90 s por IP ─────────── */
-		$ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-		if ( false !== get_transient("contact_lock_$ip") ) {
-			wp_die( 'Espera unos segundos antes de volver a enviar.' );
-		}
-		set_transient("contact_lock_$ip", '1', 90);
-	
-		/* ─── Datos limpios y VALIDADOS ──────────────── */
-		$name  = trim( wp_unslash( $_POST['contact_name'] ?? '' ) );
-		$email = trim( wp_unslash( $_POST['contact_email'] ?? '' ) );
-		$phone = trim( wp_unslash( $_POST['contact_phone'] ?? '' ) );
-		$subj  = trim( wp_unslash( $_POST['contact_subject'] ?? '' ) );
-		$msg   = trim( wp_unslash( $_POST['contact_message'] ?? '' ) );
-	
-		$errors = [];
-		if ( ! preg_match('/^[A-Za-zÀ-ÿ \'\-]{2,80}$/', $name) )   $errors[] = 'Nombre';
-		if ( ! is_email( $email ) )                               $errors[] = 'Email';
-		if ( $phone && ! preg_match('/^[0-9+\s().-]{6,30}$/', $phone) ) $errors[] = 'Teléfono';
-		if ( strlen($subj) < 3 )                                  $errors[] = 'Asunto';
-		if ( strlen($msg)  < 10 )                                 $errors[] = 'Mensaje';
-	
-		/* reCAPTCHA (opcional)
-		$token = $_POST['recaptcha_token'] ?? '';
-		if ( $token && ! mytheme_verify_recaptcha($token) ) {
-			$errors[] = 'reCAPTCHA';
-		}
-		*/
-	
-		if ( $errors ) {
-			wp_die( 'Error en: '.implode(', ', $errors) );
-		}
+	/* 2 ▸ Rate-limit 90 s/IP */
+	$ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+if ( get_transient("contact_lock_$ip") ) {
+	wp_send_json_error(
+		[
+			'message'      => 'Por favor, espera 90 segundos antes de volver a enviar.',
+			'retry_after'  => 90            
+		],
+		429
+	);
+}
+set_transient("contact_lock_$ip", '1', 90);
 
-	/* 3 E-mail */
-	$ContactMail  = defined('CONTACT_TO_EMAIL')    ? CONTACT_TO_EMAIL    : '';
-	$to      = $ContactMail;       
+	/* 3 ▸ Sanitizar + validar */
+	$name  = trim( wp_unslash($_POST['contact_name']  ?? '') );
+	$email = trim( wp_unslash($_POST['contact_email'] ?? '') );
+	$phone = trim( wp_unslash($_POST['contact_phone'] ?? '') );
+	$subj  = trim( wp_unslash($_POST['contact_subject'] ?? '') );
+	$msg   = trim( wp_unslash($_POST['contact_message'] ?? '') );
+	$privacy = isset($_POST['privacy_accept']) ? '1' : '0';
+
+	$errors = [];
+	if ( ! preg_match('/^[A-Za-zÀ-ÿ \'\-]{2,80}$/', $name) )   $errors[] = 'Nombre';
+	if ( ! is_email($email) )                                  $errors[] = 'Email';
+	if ( $phone && ! preg_match('/^[0-9+\s().-]{6,30}$/',$phone) ) $errors[]='Teléfono';
+	if ( strlen($subj) < 3 )                                   $errors[] = 'Asunto';
+	if ( strlen($msg)  < 10 )                                  $errors[] = 'Mensaje';
+	if ( $privacy !== '1' )                                    $errors[] = 'Política de privacidad';
+
+	if ( $errors ) {
+		wp_send_json_error(
+			['message'=>'Error en: '.implode(', ', $errors)],
+			422
+		);
+	}
+
+	/* 4 ▸ E-mail */
+	$to      = defined('CONTACT_TO_EMAIL') ? CONTACT_TO_EMAIL : get_option('admin_email');
 	$headers = [
 		'Content-Type: text/html; charset=UTF-8',
-		'Reply-To: '.$name.' <'.$email.'>',
+		"Reply-To: $name <$email>",
 	];
-	$body = "
-			 <strong>Nombre:</strong> ".esc_html($name)."<br>
+	$body = "<strong>Nombre:</strong> ".esc_html($name)."<br>
 	         <strong>Email:</strong> ".esc_html($email)."<br>
 	         <strong>Teléfono:</strong> ".esc_html($phone)."<br>
-	         <strong>Mensaje:</strong><br>".nl2br(esc_html($msg));
+	         <strong>Mensaje:</strong><br>".nl2br(esc_html($msg))."<br>";
 
 	wp_mail( $to, $subj, $body, $headers );
 
-	/* 4 Añadir fila en Google Sheets */
-	reformas_append_to_sheet( [
-		current_time( 'Y-m-d H:i' ),
+	/* 5 ▸ Google Sheets (opcionalmente añade 'Sí' al final) */
+	reformas_append_to_sheet([
+		current_time('Y-m-d H:i'),
 		$name, $email, $phone, $subj, $msg
-	] );
+	]);
 
-/* 5 · Redirect flash + ancla */
-$ref = wp_get_referer();
-$ref = remove_query_arg( 'sent', $ref );
-$ref = add_query_arg   ( 'sent', 'ok', $ref );
-$ref .= '#contact-form-wrap';             // ancla
-
-wp_safe_redirect( esc_url_raw( $ref ) );
-  exit;
+	/* 6 ▸ Respuesta JSON OK */
+	wp_send_json_success( ['message'=>'¡Mensaje enviado correctamente!'] );
 }
-add_action( 'admin_post_nopriv_reformas_handle_contact',
-            'reformas_handle_contact_form' );
-add_action( 'admin_post_reformas_handle_contact',
-            'reformas_handle_contact_form' );
+
+add_action( 'wp_ajax_nopriv_reformas_handle_contact_ajax',
+            'reformas_handle_contact_ajax' );
+add_action( 'wp_ajax_reformas_handle_contact_ajax',
+            'reformas_handle_contact_ajax' );
+
 
 /*---------------------------------------------------
   SHEETS

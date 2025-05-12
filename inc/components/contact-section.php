@@ -42,7 +42,7 @@ function render_contact_section( $atts ) {
 <?php
 	/* ---------- JSON‑LD ContactPage *una sola vez* ---------- */
 	if ( ! did_action( 'render_contact_section_schema' ) ) {
-		do_action( 'render_contact_section_schema' ); // evita duplicados
+		do_action( 'render_contact_section_schema' );
 		$schema = [
 			'@context' => 'https://schema.org',
 			'@type'    => 'ContactPage',
